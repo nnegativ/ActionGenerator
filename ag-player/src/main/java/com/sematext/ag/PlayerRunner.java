@@ -29,7 +29,8 @@ public final class PlayerRunner {
   public static final String SOURCE_FACTORY_CLASS_CONFIG_KEY = "player.sourceFactory.class";
   public static final String SINK_CLASS_CONFIG_KEY = "player.sink.class";
 
-  private PlayerRunner() {}
+  private PlayerRunner() {
+  }
 
   public static void main(String[] args) throws IOException {
     if (args.length != 1) {
@@ -134,13 +135,16 @@ public final class PlayerRunner {
     try {
       sourceFactory = (SourceFactory) Class.forName(sourceFactoryClass).newInstance();
     } catch (InstantiationException e) {
-      LOG.fatal("Instantiating source factory failed, " + SOURCE_FACTORY_CLASS_CONFIG_KEY + ": " + sourceFactoryClass, e);
+      LOG.fatal("Instantiating source factory failed, " + SOURCE_FACTORY_CLASS_CONFIG_KEY + ": " + sourceFactoryClass,
+          e);
       System.exit(1);
     } catch (IllegalAccessException e) {
-      LOG.fatal("Instantiating source factory failed, " + SOURCE_FACTORY_CLASS_CONFIG_KEY + ": " + sourceFactoryClass, e);
+      LOG.fatal("Instantiating source factory failed, " + SOURCE_FACTORY_CLASS_CONFIG_KEY + ": " + sourceFactoryClass,
+          e);
       System.exit(1);
     } catch (ClassNotFoundException e) {
-      LOG.fatal("Instantiating source factory failed, " + SOURCE_FACTORY_CLASS_CONFIG_KEY + ": " + sourceFactoryClass, e);
+      LOG.fatal("Instantiating source factory failed, " + SOURCE_FACTORY_CLASS_CONFIG_KEY + ": " + sourceFactoryClass,
+          e);
       System.exit(1);
     }
     return sourceFactory;

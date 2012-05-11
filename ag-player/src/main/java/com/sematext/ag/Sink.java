@@ -18,7 +18,7 @@ package com.sematext.ag;
 /**
  * FIXME: TODO: add description
  */
-public abstract class Sink {
+public abstract class Sink<T extends Event> {
   public void init(PlayerConfig config) throws InitializationFailedException {
     // DO NOTHING BY DEFAULT
   }
@@ -27,5 +27,5 @@ public abstract class Sink {
     // DO NOTHING BY DEFAULT
   }
 
-  public abstract boolean write(Event event);
+  public abstract boolean write(T event);
 }

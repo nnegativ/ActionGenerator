@@ -32,7 +32,7 @@ public class SimpleSourceFactory extends SourceFactory {
   private Class<? extends Source> sourceClass;
   private PlayerConfig config;
 
-  public void init(PlayerConfig config)  throws InitializationFailedException {
+  public void init(PlayerConfig config) throws InitializationFailedException {
     this.config = config;
     String sourceClassName = config.get(SOURCE_CLASS_CONFIG_KEY);
     if (sourceClassName == null) {
