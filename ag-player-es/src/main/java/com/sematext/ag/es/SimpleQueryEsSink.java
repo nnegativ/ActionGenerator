@@ -46,20 +46,17 @@ public class SimpleQueryEsSink extends Sink<SimpleSearchEvent> {
     indexName = config.get(ES_INDEX_NAME_KEY);
 
     if (esBaseUrl == null || "".equals(esBaseUrl.trim())) {
-      throw new IllegalArgumentException(this.getClass().getName() + " expects configuration property "
-          + ES_BASE_URL_KEY);
+      throw new IllegalArgumentException(this.getClass().getName() + " expects configuration property " + ES_BASE_URL_KEY);
     }
 
     if (indexName == null || "".equals(indexName.trim())) {
-      throw new IllegalArgumentException(this.getClass().getName() + " expects configuration property "
-          + ES_INDEX_NAME_KEY);
+      throw new IllegalArgumentException(this.getClass().getName() + " expects configuration property " + ES_INDEX_NAME_KEY);
     }
   }
 
   @Override
   public boolean write(SimpleSearchEvent event) {
-    HttpGet httpget = new HttpGet(esBaseUrl
-        + ES_QUERY_TEMPLATE.replace("${INDEX_NAME}", indexName).replace("${QUERY_STRING}", event.getQueryString()));
+    HttpGet httpget = new HttpGet(esBaseUrl + ES_QUERY_TEMPLATE.replace("${INDEX_NAME}", indexName).replace("${QUERY_STRING}", event.getQueryString()));
 
     LOG.info("Sending ES search event " + httpget.getRequestLine());
     try {

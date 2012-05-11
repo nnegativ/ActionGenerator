@@ -40,7 +40,7 @@ public class SimplePlayer extends Player {
       LOG.error("Source initialization failed. Can not proceed with playing, stopping...", e);
       return;
     }
-    
+
     try {
       play(sink, source);
     } finally {

@@ -26,4 +26,3 @@ public class SimpleSearchEvent extends Event {
     this.queryString = queryString;
   }
 }
-
