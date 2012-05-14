@@ -16,12 +16,30 @@
 package com.sematext.ag;
 
 /**
- * FIXME: TODO: add description
+ * Player class.
+ * 
+ * @author sematext, http://www.sematext.com/
  */
 public abstract class Player {
+  /**
+   * Initialize player.
+   * 
+   * @param config
+   *          player configuration
+   * @throws InitializationFailedException
+   *           thrown when initialization error occurs
+   */
   public void init(PlayerConfig config) throws InitializationFailedException {
     // DO NOTHING BY DEFAULT
   }
 
-  public abstract void play(SourceFactory source, Sink sink);
+  /**
+   * Starts player.
+   * 
+   * @param source
+   *          source factory
+   * @param sink
+   *          source sink
+   */
+  public abstract void play(SourceFactory source, Sink<Event> sink);
 }

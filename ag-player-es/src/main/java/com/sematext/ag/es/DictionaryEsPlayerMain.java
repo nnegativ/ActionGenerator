@@ -14,6 +14,11 @@ import com.sematext.ag.player.RealTimePlayer;
 import com.sematext.ag.source.SearchDictionaryPhraseEventSource;
 import com.sematext.ag.source.SimpleSourceFactory;
 
+/**
+ * Class used for starting {@link SimpleQueryEsSink} using dictionary.
+ * 
+ * @author sematext, http://www.sematext.com/
+ */
 public final class DictionaryEsPlayerMain {
   private DictionaryEsPlayerMain() {
   }

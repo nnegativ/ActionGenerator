@@ -16,16 +16,33 @@
 package com.sematext.ag;
 
 /**
- * FIXME: TODO: add description
+ * Abstract base class for {@link Event} source.
+ * 
+ * @author sematext, http://www.sematext.com/
  */
 public abstract class Source {
+  /**
+   * Initialize source.
+   * 
+   * @param config
+   *          source configuration
+   * @throws InitializationFailedException
+   *           thrown when source initializaion happens
+   */
   public void init(PlayerConfig config) throws InitializationFailedException {
-    // DO NOTHING BY DEFAULT
   }
 
+  /**
+   * Close source.
+   */
   public void close() {
     // DO NOTHING BY DEFAULT
   }
 
+  /**
+   * Return next event.
+   * 
+   * @return event
+   */
   public abstract Event nextEvent();
 }

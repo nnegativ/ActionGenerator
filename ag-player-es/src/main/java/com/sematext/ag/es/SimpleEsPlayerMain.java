@@ -14,6 +14,11 @@ import com.sematext.ag.player.RealTimePlayer;
 import com.sematext.ag.source.SearchRandomNumberEventSource;
 import com.sematext.ag.source.SimpleSourceFactory;
 
+/**
+ * Class used for starting {@link SimpleQueryEsSink}.
+ * 
+ * @author sematext, http://www.sematext.com/
+ */
 public final class SimpleEsPlayerMain {
   private SimpleEsPlayerMain() {
   }

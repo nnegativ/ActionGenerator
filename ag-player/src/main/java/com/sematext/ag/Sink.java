@@ -16,16 +16,36 @@
 package com.sematext.ag;
 
 /**
- * FIXME: TODO: add description
+ * Abstract base class for {@link Event} sink.
+ * 
+ * @author sematext, http://www.sematext.com/
  */
 public abstract class Sink<T extends Event> {
+  /**
+   * Initializes sink.
+   * 
+   * @param config
+   *          sink configuration
+   * @throws InitializationFailedException
+   *           thrown when initialization error occurs
+   */
   public void init(PlayerConfig config) throws InitializationFailedException {
     // DO NOTHING BY DEFAULT
   }
 
+  /**
+   * Close sink.
+   */
   public void close() {
     // DO NOTHING BY DEFAULT
   }
 
+  /**
+   * Writes event.
+   * 
+   * @param event
+   *          event to write
+   * @return return <code>true</code> if event was successfully written, <code>false</code> otherwise
+   */
   public abstract boolean write(T event);
 }

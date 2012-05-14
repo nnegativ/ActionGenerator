@@ -16,7 +16,9 @@
 package com.sematext.ag;
 
 /**
- * FIXME: TODO: add description
+ * Abstract class for events.
+ * 
+ * @author sematext, http://www.sematext.com/
  */
 public abstract class Event {
 }

@@ -23,15 +23,22 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * FIXME: TODO: add description
+ * Base implementation for {@link SourceFactory}.
+ * 
+ * @author sematext, http://www.sematext.com/
  */
 public class SimpleSourceFactory extends SourceFactory {
   private static final Log LOG = LogFactory.getLog(SourceFactory.class);
   public static final String SOURCE_CLASS_CONFIG_KEY = "player.source.class";
-
   private Class<? extends Source> sourceClass;
   private PlayerConfig config;
 
+  /**
+   * (non-Javadoc)
+   * 
+   * @see com.sematext.ag.SourceFactory#init(com.sematext.ag.PlayerConfig)
+   */
+  @SuppressWarnings("unchecked")
   public void init(PlayerConfig config) throws InitializationFailedException {
     this.config = config;
     String sourceClassName = config.get(SOURCE_CLASS_CONFIG_KEY);
@@ -46,6 +53,11 @@ public class SimpleSourceFactory extends SourceFactory {
     }
   }
 
+  /**
+   * (non-Javadoc)
+   * 
+   * @see com.sematext.ag.SourceFactory#create()
+   */
   @Override
   public Source create() throws InitializationFailedException {
     Source source = null;
@@ -58,11 +70,9 @@ public class SimpleSourceFactory extends SourceFactory {
       LOG.fatal("Creating source failed, " + SOURCE_CLASS_CONFIG_KEY + ": " + sourceClass, e);
       System.exit(0);
     }
-
     LOG.info("Initializing source...");
     source.init(config);
     LOG.info("Initializing source... DONE.");
-
     return source;
   }
 }

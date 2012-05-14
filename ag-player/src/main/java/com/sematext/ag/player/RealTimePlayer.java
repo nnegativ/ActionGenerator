@@ -28,9 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Simulates constant real-time user load: users using service with reasonable delays between actions
- *
- * @author sematext
+ * Simulates constant real-time user load: users using service with reasonable delays between actions.
+ * 
+ * @author sematext, http://www.sematext.com/
  */
 public class RealTimePlayer extends Player {
   private static final Logger LOG = Logger.getLogger(RealTimePlayer.class);
@@ -45,10 +45,14 @@ public class RealTimePlayer extends Player {
   private long minActionDelay;
   private long maxActionDelay;
 
+  /**
+   * (non-Javadoc)
+   * 
+   * @see com.sematext.ag.Player#init(com.sematext.ag.PlayerConfig)
+   */
   @Override
   public void init(PlayerConfig config) throws InitializationFailedException {
     validate(config);
-
     timeToWork = Long.valueOf(config.get(TIME_TO_WORK_KEY)) * 1000;
     minActionDelay = Long.valueOf(config.get(MIN_ACTION_DELAY_KEY));
     maxActionDelay = Long.valueOf(config.get(MAX_ACTION_DELAY_KEY));
@@ -62,13 +66,16 @@ public class RealTimePlayer extends Player {
     config.checkRequired(MAX_ACTION_DELAY_KEY);
     config.checkRequired(SOURCES_THREADS_COUNT_KEY);
     config.checkRequired(SOURCES_PER_THREAD_COUNT_KEY);
-
   }
 
+  /**
+   * (non-Javadoc)
+   * 
+   * @see com.sematext.ag.Player#play(com.sematext.ag.SourceFactory, com.sematext.ag.Sink)
+   */
   @Override
-  public void play(SourceFactory sourceFactory, Sink sink) {
+  public void play(SourceFactory sourceFactory, Sink<Event> sink) {
     List<List<Source>> sourceGroups = initSources(sourceFactory);
-
     Thread[] threads = new Thread[threadsNum];
     int i = 0;
     for (List<Source> sourceGroup : sourceGroups) {
@@ -88,13 +95,13 @@ public class RealTimePlayer extends Player {
 
   private static class UserGroupThread extends Thread {
     private List<Source> sourceGroup;
-    private Sink sink;
+    private Sink<Event> sink;
     private long timeToWork;
     private long minActionDelay;
     private long maxActionDelay;
 
-    public UserGroupThread(List<Source> sourceGroup, Sink sink,
-                            long timeToWork, long minActionDelay, long maxActionDelay) {
+    public UserGroupThread(List<Source> sourceGroup, Sink<Event> sink, long timeToWork, long minActionDelay,
+        long maxActionDelay) {
       this.sourceGroup = sourceGroup;
       this.sink = sink;
       this.timeToWork = timeToWork;
@@ -108,40 +115,36 @@ public class RealTimePlayer extends Player {
       while (System.currentTimeMillis() < startTime + timeToWork && sourceGroup.size() > 0) {
         int sourceIndex = (int) (Math.random() * sourceGroup.size());
         Source source = sourceGroup.get(sourceIndex);
-        Event event  = source.nextEvent();
+        Event event = source.nextEvent();
         if (null == event) {
-          LOG.info("Source finished producing events, left sources in group: " + sourceGroup.size() +
-                  ", completed source: " + source);
+          LOG.info("Source finished producing events, left sources in group: " + sourceGroup.size()
+              + ", completed source: " + source);
           close(source);
-
           sourceGroup.remove(source);
         } else {
           sink.write(event);
         }
-
         try {
-          long sleepTime = (long) ((minActionDelay + Math.random() * (maxActionDelay - minActionDelay)) / sourceGroup.size());
+          long sleepTime = (long) ((minActionDelay + Math.random() * (maxActionDelay - minActionDelay)) / sourceGroup
+              .size());
           Thread.sleep(sleepTime);
         } catch (InterruptedException e) {
           LOG.error(e); // TODO: handle properly
         }
       }
-
       for (Source source : sourceGroup) {
         close(source);
       }
     }
-
     private void close(Source source) {
       LOG.info("Closing source: " + source + "...");
       source.close();
       LOG.info("Closing source: " + source + "... DONE.");
     }
   }
-  
+
   private List<List<Source>> initSources(SourceFactory sourceFactory) {
     List<List<Source>> result = new ArrayList<List<Source>>();
-
     int sourceCount = 0;
     for (int i = 0; i < threadsNum; i++) {
       List<Source> sourceList = new ArrayList<Source>();
@@ -160,14 +163,11 @@ public class RealTimePlayer extends Player {
         LOG.warn("Source group contains no sources, group will be ignored");
         continue;
       }
-
       result.add(sourceList);
       sourceCount += sourceList.size();
     }
-
     LOG.info("Created " + result.size() + " source groups with total " + sourceCount + " sources.");
-
     return result;
   }
-  
+
 }

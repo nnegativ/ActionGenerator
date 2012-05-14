@@ -16,13 +16,31 @@
 package com.sematext.ag;
 
 /**
- * FIXME: TODO: add description
+ * Exception thrown when initialization error occurs.
+ * 
+ * @author sematext, http://www.sematext.com/
  */
 public class InitializationFailedException extends Exception {
+  private static final long serialVersionUID = 6055746873175504471L;
+
+  /**
+   * Constructor.
+   * 
+   * @param message
+   *          error message
+   */
   public InitializationFailedException(String message) {
     super(message);
   }
 
+  /**
+   * Constructor.
+   * 
+   * @param message
+   *          error message
+   * @param cause
+   *          error cause
+   */
   public InitializationFailedException(String message, Throwable cause) {
     super(message, cause);
   }

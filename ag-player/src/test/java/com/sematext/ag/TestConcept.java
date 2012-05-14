@@ -15,15 +15,16 @@
  */
 package com.sematext.ag;
 
+import org.junit.Test;
+
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
 import com.sematext.ag.player.RealTimePlayer;
 import com.sematext.ag.player.SimplePlayer;
 import com.sematext.ag.source.SimpleSourceFactory;
-import junit.framework.Assert;
-import org.junit.Test;
 
-/**
- */
-public class TestConcept {
+public class TestConcept extends TestCase {
   private volatile static int writtenEvents;
   private volatile static int writtenEventsSum;
 
@@ -52,7 +53,7 @@ public class TestConcept {
     }
   }
 
-  public static class TestSink extends Sink {
+  public static class TestSink extends Sink<Event> {
     private boolean initialized = false;
 
     @Override
@@ -78,10 +79,9 @@ public class TestConcept {
   @Test
   public void test() {
     PlayerConfig config = new PlayerConfig(PlayerRunner.PLAYER_CLASS_CONFIG_KEY, SimplePlayer.class.getName(),
-                                           PlayerRunner.SOURCE_FACTORY_CLASS_CONFIG_KEY, SimpleSourceFactory.class.getName(),
-                                           SimpleSourceFactory.SOURCE_CLASS_CONFIG_KEY, TestSource.class.getName(),
-                                           PlayerRunner.SINK_CLASS_CONFIG_KEY, TestSink.class.getName(),
-                                           "testSource.maxEvents", "1000", "testSink.initialize", "true");
+        PlayerRunner.SOURCE_FACTORY_CLASS_CONFIG_KEY, SimpleSourceFactory.class.getName(),
+        SimpleSourceFactory.SOURCE_CLASS_CONFIG_KEY, TestSource.class.getName(), PlayerRunner.SINK_CLASS_CONFIG_KEY,
+        TestSink.class.getName(), "testSource.maxEvents", "1000", "testSink.initialize", "true");
     PlayerRunner.play(config);
 
     Assert.assertEquals(1000, writtenEvents);
@@ -91,15 +91,12 @@ public class TestConcept {
   @Test
   public void testRealTimePlayer() {
     PlayerConfig config = new PlayerConfig(PlayerRunner.PLAYER_CLASS_CONFIG_KEY, RealTimePlayer.class.getName(),
-                                           RealTimePlayer.MIN_ACTION_DELAY_KEY, "0",
-                                           RealTimePlayer.MAX_ACTION_DELAY_KEY, "100",
-                                           RealTimePlayer.TIME_TO_WORK_KEY, "2",
-                                           RealTimePlayer.SOURCES_THREADS_COUNT_KEY, "2",
-                                           RealTimePlayer.SOURCES_PER_THREAD_COUNT_KEY, "3",
-                                           PlayerRunner.SOURCE_FACTORY_CLASS_CONFIG_KEY, SimpleSourceFactory.class.getName(),
-                                           SimpleSourceFactory.SOURCE_CLASS_CONFIG_KEY, TestSource.class.getName(),
-                                           PlayerRunner.SINK_CLASS_CONFIG_KEY, TestSink.class.getName(),
-                                           "testSource.maxEvents", "1000", "testSink.initialize", "true");
+        RealTimePlayer.MIN_ACTION_DELAY_KEY, "0", RealTimePlayer.MAX_ACTION_DELAY_KEY, "100",
+        RealTimePlayer.TIME_TO_WORK_KEY, "2", RealTimePlayer.SOURCES_THREADS_COUNT_KEY, "2",
+        RealTimePlayer.SOURCES_PER_THREAD_COUNT_KEY, "3", PlayerRunner.SOURCE_FACTORY_CLASS_CONFIG_KEY,
+        SimpleSourceFactory.class.getName(), SimpleSourceFactory.SOURCE_CLASS_CONFIG_KEY, TestSource.class.getName(),
+        PlayerRunner.SINK_CLASS_CONFIG_KEY, TestSink.class.getName(), "testSource.maxEvents", "1000",
+        "testSink.initialize", "true");
     PlayerRunner.play(config);
 
     int eventsPerSourceEstimate = 2000 / ((100 - 0) / 2);
@@ -111,6 +108,7 @@ public class TestConcept {
     int eventsValuesSumEstimate = sourcesCount * (1 + eventsPerSourceEstimate) * eventsPerSourceEstimate / 2;
     System.out.println("eventsValuesSumEstimate: " + eventsValuesSumEstimate);
     System.out.println("writtenEventsSum: " + writtenEventsSum);
-    Assert.assertTrue(eventsValuesSumEstimate * 0.85 < writtenEventsSum && eventsValuesSumEstimate * 1.15 > writtenEventsSum);
+    Assert.assertTrue(eventsValuesSumEstimate * 0.85 < writtenEventsSum
+        && eventsValuesSumEstimate * 1.15 > writtenEventsSum);
   }
 }

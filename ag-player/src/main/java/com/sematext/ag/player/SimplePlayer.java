@@ -25,13 +25,20 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * FIXME: TODO: add description
+ * Base player implementation.
+ * 
+ * @author sematext, http://www.sematext.com/
  */
 public class SimplePlayer extends Player {
   private static final Log LOG = LogFactory.getLog(SimplePlayer.class);
 
+  /**
+   * (non-Javadoc)
+   * 
+   * @see com.sematext.ag.Player#play(com.sematext.ag.SourceFactory, com.sematext.ag.Sink)
+   */
   @Override
-  public void play(SourceFactory sourceFactory, Sink sink) {
+  public void play(SourceFactory sourceFactory, Sink<Event> sink) {
     LOG.info("Actions will be played using one source.");
     Source source = null;
     try {
@@ -48,7 +55,7 @@ public class SimplePlayer extends Player {
     }
   }
 
-  private void play(Sink sink, Source source) {
+  protected void play(Sink<Event> sink, Source source) {
     Event e = source.nextEvent();
     while (null != e) {
       sink.write(e);

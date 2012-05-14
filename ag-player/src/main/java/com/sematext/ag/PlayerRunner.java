@@ -21,7 +21,9 @@ import org.apache.commons.logging.LogFactory;
 import java.io.IOException;
 
 /**
- * FIXME: TODO: add description
+ * Main class for running process.
+ * 
+ * @author sematext, http://www.sematext.com/
  */
 public final class PlayerRunner {
   private static final Log LOG = LogFactory.getLog(PlayerRunner.class);
@@ -37,9 +39,7 @@ public final class PlayerRunner {
       System.out.println("Usage: java com.sematext.ag.PlayerRunner <config-file>");
       System.exit(1);
     }
-
     PlayerConfig config = new PlayerConfig(args[0]);
-
     play(config);
   }
 
@@ -50,10 +50,9 @@ public final class PlayerRunner {
       LOG.fatal("Bad configuration", e);
       System.exit(0);
     }
-
     Player player = instantiatePlayer(config);
     SourceFactory sourceFactory = instantiateSourceFactory(config);
-    Sink sink = instantiateSink(config);
+    Sink<Event> sink = instantiateSink(config);
 
     initPlayer(config, player);
     initSourceFactory(config, sourceFactory);
@@ -66,13 +65,13 @@ public final class PlayerRunner {
     }
   }
 
-  private static void play(Player player, SourceFactory sourceFactory, Sink sink) {
+  private static void play(Player player, SourceFactory sourceFactory, Sink<Event> sink) {
     LOG.info("Start playing...");
     player.play(sourceFactory, sink);
     LOG.info("Finished playing.");
   }
 
-  private static void initSink(PlayerConfig config, Sink sink) {
+  private static void initSink(PlayerConfig config, Sink<Event> sink) {
     LOG.info("Initializing sink...");
     try {
       sink.init(config);
@@ -83,7 +82,7 @@ public final class PlayerRunner {
     }
   }
 
-  private static void closeSink(Sink sink) {
+  private static void closeSink(Sink<Event> sink) {
     LOG.info("Closing sink...");
     sink.close();
     LOG.info("Closing sink... DONE.");
@@ -111,11 +110,12 @@ public final class PlayerRunner {
     LOG.info("Initializing player... DONE.");
   }
 
-  private static Sink instantiateSink(PlayerConfig config) {
+  @SuppressWarnings("unchecked")
+  private static Sink<Event> instantiateSink(PlayerConfig config) {
     String sinkClass = config.get(SINK_CLASS_CONFIG_KEY);
-    Sink sink = null;
+    Sink<Event> sink = null;
     try {
-      sink = (Sink) Class.forName(sinkClass).newInstance();
+      sink = (Sink<Event>) Class.forName(sinkClass).newInstance();
     } catch (InstantiationException e) {
       LOG.fatal("Instantiating sink failed, " + SINK_CLASS_CONFIG_KEY + ": " + sinkClass, e);
       System.exit(1);
