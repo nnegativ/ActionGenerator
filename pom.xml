@@ -118,6 +118,7 @@
   <modules>
     <module>ag-player</module>
     <module>ag-player-es</module>
+    <module>ag-player-solr</module>
   </modules>
 
   <dependencies>
