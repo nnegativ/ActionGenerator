@@ -18,7 +18,7 @@ package com.sematext.ag.event;
 import com.sematext.ag.Event;
 
 /**
- * Simple implementation of search event which executed just a query (without things like filtering, sorting etc).
+ * Simple implementation of search event which holds a query to execute (without things like filtering, sorting etc).
  * 
  * @author sematext, http://www.sematext.com/
  */
