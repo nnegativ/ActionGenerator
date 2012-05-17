@@ -18,6 +18,7 @@ package com.sematext.ag.solr;
 import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.PlayerRunner;
 import com.sematext.ag.player.RealTimePlayer;
+import com.sematext.ag.solr.sink.SimpleQuerySolrSink;
 import com.sematext.ag.source.SearchDictionaryPhraseEventSource;
 import com.sematext.ag.source.SimpleSourceFactory;
 

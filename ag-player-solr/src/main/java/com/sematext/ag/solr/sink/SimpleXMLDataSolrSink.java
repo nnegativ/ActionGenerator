@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.ag.solr;
+package com.sematext.ag.solr.sink;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.util.EntityUtils;
@@ -28,18 +30,18 @@ import java.io.IOException;
 
 import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.Sink;
-import com.sematext.ag.event.SimpleSearchEvent;
+import com.sematext.ag.event.SimpleDataEvent;
+import com.sematext.ag.solr.util.XMLUtils;
 
 /**
- * {@link Sink} implementation for Apache Solr query.
+ * {@link Sink} implementation for Apache Solr data.
  * 
  * @author sematext, http://www.sematext.com/
  */
-public class SimpleQuerySolrSink extends Sink<SimpleSearchEvent> {
-  public static final String SOLR_URL_KEY = "simpleSolrSink.solrUrl";
-  private static final Logger LOG = Logger.getLogger(SimpleQuerySolrSink.class);
+public class SimpleXMLDataSolrSink extends Sink<SimpleDataEvent> {
+  public static final String SOLR_URL_KEY = "simpleXMLDataSink.solrUrl";
+  private static final Logger LOG = Logger.getLogger(SimpleXMLDataSolrSink.class);
   private static final HttpClient HTTP_CLIENT_INSTANCE;
-  private static final String SOLR_QUERY_TEMPLATE = "?q=${QUERY_STRING}";
   private String solrUrl;
 
   static {
@@ -66,19 +68,21 @@ public class SimpleQuerySolrSink extends Sink<SimpleSearchEvent> {
    * @see com.sematext.ag.Sink#write(com.sematext.ag.Event)
    */
   @Override
-  public boolean write(SimpleSearchEvent event) {
-    HttpGet httpget = new HttpGet(solrUrl + SOLR_QUERY_TEMPLATE.replace("${QUERY_STRING}", event.getQueryString()));
-    LOG.info("Sending Apache Solr search event " + httpget.getRequestLine());
+  public boolean write(SimpleDataEvent event) {
+    HttpPost postMethod = new HttpPost(solrUrl);
+    LOG.info("Sending data to Apache Solr");
     try {
-      HttpResponse response = HTTP_CLIENT_INSTANCE.execute(httpget);
+      StringEntity postEntity = new StringEntity(XMLUtils.getSolrAddDocument(event.pairs()));
+      postMethod.setEntity(postEntity);
+      HttpResponse response = HTTP_CLIENT_INSTANCE.execute(postMethod);
       LOG.info("Event sent");
-      if (response.getStatusLine().getStatusCode() == 404) {
+      if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
         return false;
       }
       HttpEntity entity = response.getEntity();
       EntityUtils.consume(entity);
     } catch (IOException e) {
-      LOG.error("Sending event failed", e);
+      LOG.error("Event send failed", e);
       return false;
     }
     return true;
