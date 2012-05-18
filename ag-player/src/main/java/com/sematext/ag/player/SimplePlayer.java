@@ -15,12 +15,13 @@
  */
 package com.sematext.ag.player;
 
-import com.sematext.ag.Event;
-import com.sematext.ag.InitializationFailedException;
 import com.sematext.ag.Player;
-import com.sematext.ag.Sink;
-import com.sematext.ag.Source;
-import com.sematext.ag.SourceFactory;
+import com.sematext.ag.event.Event;
+import com.sematext.ag.exception.InitializationFailedException;
+import com.sematext.ag.sink.Sink;
+import com.sematext.ag.source.Source;
+import com.sematext.ag.source.SourceFactory;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -35,7 +36,7 @@ public class SimplePlayer extends Player {
   /**
    * (non-Javadoc)
    * 
-   * @see com.sematext.ag.Player#play(com.sematext.ag.SourceFactory, com.sematext.ag.Sink)
+   * @see com.sematext.ag.Player#play(com.sematext.ag.source.SourceFactory, com.sematext.ag.sink.Sink)
    */
   @Override
   public void play(SourceFactory sourceFactory, Sink<Event> sink) {

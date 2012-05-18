@@ -13,20 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.ag.source;
+package com.sematext.ag.source.dictionary;
 
-import java.util.Random;
+import org.apache.log4j.Logger;
 
 import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.event.SimpleSearchEvent;
+import com.sematext.ag.source.FiniteEventSource;
 
 /**
- * Implementation of {@link FiniteEventSource} for random number.
+ * {@link FiniteEventSource} for search phrases generated using dictionary.
  * 
  * @author sematext, http://www.sematext.com/
  */
-public class SearchRandomNumberEventSource extends FiniteEventSource<SimpleSearchEvent> {
-  public static final String SEARCH_FIELD_NAME_KEY = "searchRandomNumberEventSource.searchFieldName";
+public class SearchDictionaryPhraseEventSource extends AbstractDictionaryEventSource<SimpleSearchEvent> {
+  private static final Logger LOG = Logger.getLogger(SearchDictionaryPhraseEventSource.class);
+  public static final String SEARCH_FIELD_NAME_KEY = "searchDictionaryPhraseEventSource.searchFieldName";
   private String searchFieldName;
 
   /**
@@ -35,7 +37,7 @@ public class SearchRandomNumberEventSource extends FiniteEventSource<SimpleSearc
    * @see com.sematext.ag.source.FiniteEventSource#init(com.sematext.ag.PlayerConfig)
    */
   @Override
-  public void init(PlayerConfig config) {
+  public synchronized void init(PlayerConfig config) {
     super.init(config);
     searchFieldName = config.get(SEARCH_FIELD_NAME_KEY);
     if (searchFieldName == null || "".equals(searchFieldName.trim())) {
@@ -51,9 +53,9 @@ public class SearchRandomNumberEventSource extends FiniteEventSource<SimpleSearc
    */
   @Override
   protected SimpleSearchEvent createNextEvent() {
-    // TODO for now, query is a number, but we should create a query from some dictionary
     SimpleSearchEvent e = new SimpleSearchEvent();
-    e.setQueryString(searchFieldName + ":" + String.valueOf(new Random().nextInt(100000)));
+    e.setQueryString(searchFieldName + ":" + getDictionaryEntry());
+    LOG.info("Created event with query string : " + e.getQueryString());
     return e;
   }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.ag.source;
+package com.sematext.ag.source.dictionary;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,23 +23,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.log4j.Logger;
-
 import com.sematext.ag.PlayerConfig;
-import com.sematext.ag.event.SimpleSearchEvent;
+import com.sematext.ag.event.Event;
+import com.sematext.ag.source.FiniteEventSource;
 
 /**
- * {@link FiniteEventSource} for search phrases generated using dictionary.
+ * Abstract class for dictionary based {@link Event} source.
  * 
  * @author sematext, http://www.sematext.com/
  */
-public class SearchDictionaryPhraseEventSource extends FiniteEventSource<SimpleSearchEvent> {
-  private static final Logger LOG = Logger.getLogger(SearchDictionaryPhraseEventSource.class);
-  public static final String SEARCH_FIELD_NAME_KEY = "searchDictionaryPhraseEventSource.searchFieldName";
-  public static final String DICTIONARY_FILE_NAME_KEY = "searchDictionaryPhraseEventSource.dictionaryFileName";
+public abstract class AbstractDictionaryEventSource<T extends Event> extends FiniteEventSource<T> {
+  public static final String DICTIONARY_FILE_NAME_KEY = "abstractDictionaryEventSource.dictionaryFileName";
   private static final List<String> DICTIONARY = new ArrayList<String>();
-  private String searchFieldName;
-  private Random random = new Random();
+  protected static Random RANDOM = new Random();
 
   /**
    * (non-Javadoc)
@@ -49,11 +45,6 @@ public class SearchDictionaryPhraseEventSource extends FiniteEventSource<SimpleS
   @Override
   public synchronized void init(PlayerConfig config) {
     super.init(config);
-    searchFieldName = config.get(SEARCH_FIELD_NAME_KEY);
-    if (searchFieldName == null || "".equals(searchFieldName.trim())) {
-      throw new IllegalArgumentException(this.getClass().getName() + " expects configuration property "
-          + SEARCH_FIELD_NAME_KEY);
-    }
     String dictFileName = config.get(DICTIONARY_FILE_NAME_KEY);
     if (dictFileName == null || "".equals(dictFileName.trim())) {
       throw new IllegalArgumentException(this.getClass().getName() + " expects configuration property "
@@ -78,18 +69,15 @@ public class SearchDictionaryPhraseEventSource extends FiniteEventSource<SimpleS
       throw new IllegalArgumentException("File " + f.getName() + " under key " + DICTIONARY_FILE_NAME_KEY
           + " not readable!");
     }
+    
   }
 
   /**
-   * (non-Javadoc)
+   * Get dictionary entry.
    * 
-   * @see com.sematext.ag.source.FiniteEventSource#createNextEvent()
+   * @return dictionary entry
    */
-  @Override
-  protected SimpleSearchEvent createNextEvent() {
-    SimpleSearchEvent e = new SimpleSearchEvent();
-    e.setQueryString(searchFieldName + ":" + DICTIONARY.get(random.nextInt(DICTIONARY.size())));
-    LOG.info("Created event with query string : " + e.getQueryString());
-    return e;
+  public String getDictionaryEntry() {
+    return DICTIONARY.get(RANDOM.nextInt(DICTIONARY.size()));
   }
 }

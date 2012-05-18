@@ -13,19 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.ag;
+package com.sematext.ag.source;
+
+import com.sematext.ag.PlayerConfig;
+import com.sematext.ag.exception.InitializationFailedException;
 
 /**
- * Abstract base class for {@link Event} sink.
+ * Abstract base class for {@link Source} factory.
  * 
  * @author sematext, http://www.sematext.com/
  */
-public abstract class Sink<T extends Event> {
+public abstract class SourceFactory {
   /**
-   * Initializes sink.
+   * Initialize source factory.
    * 
    * @param config
-   *          sink configuration
+   *          configuration
    * @throws InitializationFailedException
    *           thrown when initialization error occurs
    */
@@ -34,18 +37,11 @@ public abstract class Sink<T extends Event> {
   }
 
   /**
-   * Close sink.
-   */
-  public void close() {
-    // DO NOTHING BY DEFAULT
-  }
-
-  /**
-   * Writes event.
+   * Creates {@link Source} instance.
    * 
-   * @param event
-   *          event to write
-   * @return return <code>true</code> if event was successfully written, <code>false</code> otherwise
+   * @return Source instance
+   * @throws InitializationFailedException
+   *           thrown when initialization error occurs
    */
-  public abstract boolean write(T event);
+  public abstract Source create() throws InitializationFailedException;
 }

@@ -15,42 +15,29 @@
  */
 package com.sematext.ag.solr.sink;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
-
 import com.sematext.ag.PlayerConfig;
-import com.sematext.ag.Sink;
 import com.sematext.ag.event.SimpleSearchEvent;
+import com.sematext.ag.sink.AbstractHttpSink;
+import com.sematext.ag.sink.Sink;
 
 /**
  * {@link Sink} implementation for Apache Solr query.
  * 
  * @author sematext, http://www.sematext.com/
  */
-public class SimpleQuerySolrSink extends Sink<SimpleSearchEvent> {
+public class SimpleQuerySolrSink extends AbstractHttpSink<SimpleSearchEvent> {
   public static final String SOLR_URL_KEY = "simpleSolrSink.solrUrl";
   private static final Logger LOG = Logger.getLogger(SimpleQuerySolrSink.class);
-  private static final HttpClient HTTP_CLIENT_INSTANCE;
   private static final String SOLR_QUERY_TEMPLATE = "?q=${QUERY_STRING}";
   private String solrUrl;
-
-  static {
-    ThreadSafeClientConnManager tsccm = new ThreadSafeClientConnManager();
-    HTTP_CLIENT_INSTANCE = new DefaultHttpClient(tsccm);
-  }
 
   /**
    * (non-Javadoc)
    * 
-   * @see com.sematext.ag.Sink#init(com.sematext.ag.PlayerConfig)
+   * @see com.sematext.ag.sink.Sink#init(com.sematext.ag.PlayerConfig)
    */
   @Override
   public void init(PlayerConfig config) {
@@ -63,24 +50,12 @@ public class SimpleQuerySolrSink extends Sink<SimpleSearchEvent> {
   /**
    * (non-Javadoc)
    * 
-   * @see com.sematext.ag.Sink#write(com.sematext.ag.Event)
+   * @see com.sematext.ag.sink.Sink#write(com.sematext.ag.Event)
    */
   @Override
   public boolean write(SimpleSearchEvent event) {
-    HttpGet httpget = new HttpGet(solrUrl + SOLR_QUERY_TEMPLATE.replace("${QUERY_STRING}", event.getQueryString()));
-    LOG.info("Sending Apache Solr search event " + httpget.getRequestLine());
-    try {
-      HttpResponse response = HTTP_CLIENT_INSTANCE.execute(httpget);
-      LOG.info("Event sent");
-      if (response.getStatusLine().getStatusCode() == 404) {
-        return false;
-      }
-      HttpEntity entity = response.getEntity();
-      EntityUtils.consume(entity);
-    } catch (IOException e) {
-      LOG.error("Sending event failed", e);
-      return false;
-    }
-    return true;
+    HttpGet httpGet = new HttpGet(solrUrl + SOLR_QUERY_TEMPLATE.replace("${QUERY_STRING}", event.getQueryString()));
+    LOG.info("Sending Apache Solr search event " + httpGet.getRequestLine());
+    return execute(httpGet);
   }
 }

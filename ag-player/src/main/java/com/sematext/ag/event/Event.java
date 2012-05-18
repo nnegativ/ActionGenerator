@@ -13,36 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.ag;
+package com.sematext.ag.event;
 
 /**
- * Abstract base class for {@link Event} source.
+ * Abstract class for events.
  * 
  * @author sematext, http://www.sematext.com/
  */
-public abstract class Source {
-  /**
-   * Initialize source.
-   * 
-   * @param config
-   *          source configuration
-   * @throws InitializationFailedException
-   *           thrown when source initializaion happens
-   */
-  public void init(PlayerConfig config) throws InitializationFailedException {
-  }
-
-  /**
-   * Close source.
-   */
-  public void close() {
-    // DO NOTHING BY DEFAULT
-  }
-
-  /**
-   * Return next event.
-   * 
-   * @return event
-   */
-  public abstract Event nextEvent();
+public abstract class Event {
 }

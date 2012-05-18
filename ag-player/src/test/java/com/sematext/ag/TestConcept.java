@@ -20,9 +20,12 @@ import org.junit.Test;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
+import com.sematext.ag.event.Event;
 import com.sematext.ag.player.RealTimePlayer;
 import com.sematext.ag.player.SimplePlayer;
+import com.sematext.ag.sink.Sink;
 import com.sematext.ag.source.SimpleSourceFactory;
+import com.sematext.ag.source.Source;
 
 public class TestConcept extends TestCase {
   private volatile static int writtenEvents;
@@ -70,7 +73,6 @@ public class TestConcept extends TestCase {
       }
       writtenEvents++;
       writtenEventsSum += ((TestEvent) event).number;
-
       return true;
     }
 
@@ -83,7 +85,6 @@ public class TestConcept extends TestCase {
         SimpleSourceFactory.SOURCE_CLASS_CONFIG_KEY, TestSource.class.getName(), PlayerRunner.SINK_CLASS_CONFIG_KEY,
         TestSink.class.getName(), "testSource.maxEvents", "1000", "testSink.initialize", "true");
     PlayerRunner.play(config);
-
     Assert.assertEquals(1000, writtenEvents);
     Assert.assertEquals((1 + 1000) * 1000 / 2, writtenEventsSum);
   }

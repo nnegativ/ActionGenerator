@@ -17,9 +17,10 @@ package com.sematext.ag.es;
 
 import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.PlayerRunner;
+import com.sematext.ag.es.sink.SimpleQueryEsSink;
 import com.sematext.ag.player.RealTimePlayer;
-import com.sematext.ag.source.SearchRandomNumberEventSource;
 import com.sematext.ag.source.SimpleSourceFactory;
+import com.sematext.ag.source.random.SearchRandomNumberEventSource;
 
 /**
  * Class used for starting {@link SimpleQueryEsSink}.

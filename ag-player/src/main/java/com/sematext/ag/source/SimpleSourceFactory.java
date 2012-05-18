@@ -15,10 +15,9 @@
  */
 package com.sematext.ag.source;
 
-import com.sematext.ag.InitializationFailedException;
 import com.sematext.ag.PlayerConfig;
-import com.sematext.ag.Source;
-import com.sematext.ag.SourceFactory;
+import com.sematext.ag.exception.InitializationFailedException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -36,7 +35,7 @@ public class SimpleSourceFactory extends SourceFactory {
   /**
    * (non-Javadoc)
    * 
-   * @see com.sematext.ag.SourceFactory#init(com.sematext.ag.PlayerConfig)
+   * @see com.sematext.ag.source.SourceFactory#init(com.sematext.ag.PlayerConfig)
    */
   @SuppressWarnings("unchecked")
   public void init(PlayerConfig config) throws InitializationFailedException {
@@ -56,7 +55,7 @@ public class SimpleSourceFactory extends SourceFactory {
   /**
    * (non-Javadoc)
    * 
-   * @see com.sematext.ag.SourceFactory#create()
+   * @see com.sematext.ag.source.SourceFactory#create()
    */
   @Override
   public Source create() throws InitializationFailedException {

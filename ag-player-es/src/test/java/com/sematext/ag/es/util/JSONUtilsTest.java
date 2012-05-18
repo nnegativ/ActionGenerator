@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Sematext International
+ * Copyright Sematext International
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.ag.event;
+package com.sematext.ag.es.util;
 
+import org.junit.Test;
 
-/**
- * Simple implementation of search event which holds a query to execute (without things like filtering, sorting etc).
- * 
- * @author sematext, http://www.sematext.com/
- */
-public class SimpleSearchEvent extends Event {
-  private String queryString;
+import java.util.HashMap;
+import java.util.Map;
+import junit.framework.TestCase;
 
-  public String getQueryString() {
-    return queryString;
-  }
-
-  public void setQueryString(String queryString) {
-    this.queryString = queryString;
+public class JSONUtilsTest extends TestCase {
+  @Test
+  public void testGetElasticSearchAddDocument() throws Exception {
+    Map<String, String> pairs = new HashMap<String, String>();
+    pairs.put("aaa", "val_aaa");
+    pairs.put("bb", "val_bb");
+    assertEquals("{\"aaa\":\"val_aaa\",\"bb\":\"val_bb\"}", JSONUtils.getElasticSearchAddDocument(pairs));
   }
 }

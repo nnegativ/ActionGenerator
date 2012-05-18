@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.ag.solr.sink;
+package com.sematext.ag.es.sink;
 
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -22,22 +22,26 @@ import org.apache.log4j.Logger;
 import java.io.UnsupportedEncodingException;
 
 import com.sematext.ag.PlayerConfig;
+import com.sematext.ag.es.util.JSONUtils;
 import com.sematext.ag.event.SimpleDataEvent;
 import com.sematext.ag.exception.InitializationFailedException;
 import com.sematext.ag.sink.AbstractHttpSink;
 import com.sematext.ag.sink.Sink;
-import com.sematext.ag.solr.util.XMLUtils;
 
 /**
- * {@link Sink} implementation for Apache Solr data.
+ * {@link Sink} implementation for ElasticSearch data.
  * 
  * @author sematext, http://www.sematext.com/
  */
-public class SimpleXMLDataSolrSink extends AbstractHttpSink<SimpleDataEvent> {
-  public static final String SOLR_URL_KEY = "simpleXMLDataSink.solrUrl";
-  private static final Logger LOG = Logger.getLogger(SimpleXMLDataSolrSink.class);
-  private String solrUrl;
-
+public class SimpleJSONDataESSink extends AbstractHttpSink<SimpleDataEvent> {
+  public static final String ES_BASE_URL_KEY = "simpleJSONDataEsSink.esBaseUrl";
+  public static final String ES_INDEX_NAME_KEY = "simpleJSONDataEsSink.indexName";
+  public static final String ES_TYPE_NAME_KEY = "simpleJSONDataEsSink.typeName";
+  private static final Logger LOG = Logger.getLogger(SimpleJSONDataESSink.class);
+  private String esBaseUrl;
+  private String indexName;
+  private String typeName;
+  
   /**
    * (non-Javadoc)
    * 
@@ -46,12 +50,23 @@ public class SimpleXMLDataSolrSink extends AbstractHttpSink<SimpleDataEvent> {
   @Override
   public void init(PlayerConfig config) throws InitializationFailedException {
     super.init(config);
-    solrUrl = config.get(SOLR_URL_KEY);
-    if (solrUrl == null || "".equals(solrUrl.trim())) {
-      throw new IllegalArgumentException(this.getClass().getName() + " expects configuration property " + SOLR_URL_KEY);
+    esBaseUrl = config.get(ES_BASE_URL_KEY);
+    indexName = config.get(ES_INDEX_NAME_KEY);
+    typeName = config.get(ES_TYPE_NAME_KEY);
+    if (esBaseUrl == null || "".equals(esBaseUrl.trim())) {
+      throw new IllegalArgumentException(this.getClass().getName() + " expects configuration property "
+          + ES_BASE_URL_KEY);
+    }
+    if (indexName == null || "".equals(indexName.trim())) {
+      throw new IllegalArgumentException(this.getClass().getName() + " expects configuration property "
+          + ES_INDEX_NAME_KEY);
+    }
+    if (typeName == null || "".equals(typeName.trim())) {
+      throw new IllegalArgumentException(this.getClass().getName() + " expects configuration property "
+          + ES_TYPE_NAME_KEY);
     }
   }
-
+  
   /**
    * (non-Javadoc)
    * 
@@ -59,12 +74,13 @@ public class SimpleXMLDataSolrSink extends AbstractHttpSink<SimpleDataEvent> {
    */
   @Override
   public boolean write(SimpleDataEvent event) {
-    LOG.info("Sending data to Apache Solr");
-    HttpPost postMethod = new HttpPost(solrUrl);
+    LOG.info("Sending ES index event");
+    HttpPost postMethod = new HttpPost(esBaseUrl + "/" + indexName + "/" + typeName + "/" + event.getId());
     StringEntity postEntity;
     try {
-      postEntity = new StringEntity(XMLUtils.getSolrAddDocument(event.pairs()), "UTF-8");
+      postEntity = new StringEntity(JSONUtils.getElasticSearchAddDocument(event.pairs()), "UTF-8");
       postMethod.setEntity(postEntity);
+      System.out.println(postMethod.toString());
       return execute(postMethod);
     } catch (UnsupportedEncodingException uee) {
       LOG.error("Error sending event: " + uee);

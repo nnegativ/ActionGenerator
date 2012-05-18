@@ -18,18 +18,18 @@ package com.sematext.ag.event;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sematext.ag.Event;
-
 /**
  * Simple implementation of data event which stores key - value pairs.
  * 
  * @author sematext, http://www.sematext.com/
  */
 public class SimpleDataEvent extends Event {
+  private String id;
   private Map<String, String> pairs;
 
-  public SimpleDataEvent() {
+  public SimpleDataEvent(String id) {
     pairs = new HashMap<String, String>();
+    this.id = id;
   }
 
   /**
@@ -51,5 +51,14 @@ public class SimpleDataEvent extends Event {
    */
   public Map<String, String> pairs() {
     return pairs;
+  }
+
+  /**
+   * Returns ID of the event.
+   * 
+   * @return ID of the event
+   */
+  public String getId() {
+    return id;
   }
 }

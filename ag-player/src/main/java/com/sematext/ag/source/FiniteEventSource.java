@@ -15,9 +15,8 @@
  */
 package com.sematext.ag.source;
 
-import com.sematext.ag.Event;
 import com.sematext.ag.PlayerConfig;
-import com.sematext.ag.Source;
+import com.sematext.ag.event.Event;
 
 /**
  * Abstract class for finite {@link Source} generator.
@@ -32,7 +31,7 @@ public abstract class FiniteEventSource<T extends Event> extends Source {
   /**
    * (non-Javadoc)
    * 
-   * @see com.sematext.ag.Source#init(com.sematext.ag.PlayerConfig)
+   * @see com.sematext.ag.source.Source#init(com.sematext.ag.PlayerConfig)
    */
   @Override
   public void init(PlayerConfig config) {
@@ -43,7 +42,7 @@ public abstract class FiniteEventSource<T extends Event> extends Source {
   /**
    * (non-Javadoc)
    * 
-   * @see com.sematext.ag.Source#nextEvent()
+   * @see com.sematext.ag.source.Source#nextEvent()
    */
   @Override
   public T nextEvent() {
@@ -51,6 +50,7 @@ public abstract class FiniteEventSource<T extends Event> extends Source {
       return null;
     }
     T event = createNextEvent();
+    producedEvents++;
     return event;
   }
 

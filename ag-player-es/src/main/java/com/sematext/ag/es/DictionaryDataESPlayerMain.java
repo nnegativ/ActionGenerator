@@ -17,46 +17,52 @@ package com.sematext.ag.es;
 
 import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.PlayerRunner;
-import com.sematext.ag.es.sink.SimpleQueryEsSink;
+import com.sematext.ag.es.sink.SimpleJSONDataESSink;
 import com.sematext.ag.player.RealTimePlayer;
+import com.sematext.ag.source.FiniteEventSource;
 import com.sematext.ag.source.SimpleSourceFactory;
-import com.sematext.ag.source.dictionary.SearchDictionaryPhraseEventSource;
+import com.sematext.ag.source.dictionary.DataDictionaryEventSource;
 
-/**
- * Class used for starting {@link SimpleQueryEsSink} using dictionary.
- * 
- * @author sematext, http://www.sematext.com/
- */
-public final class DictionaryEsPlayerMain {
-  private DictionaryEsPlayerMain() {
+public final class DictionaryDataESPlayerMain {
+  private DictionaryDataESPlayerMain() {
   }
 
-  /**
-   * @param args
-   */
   public static void main(String[] args) {
-    if (args.length != 5) {
-      System.out.println("Usage: esBaseUrl esIndexName searchFieldName eventsCount dictionaryFile");
-      System.out.println("Example: http://localhost:9200 dashboard text 10000 someFile.txt");
+    if (args.length < 6) {
+      System.out
+          .println("Usage: esBaseUrl esIndexName esTypeName eventsCount dictionaryFile fieldName:type [fieldName:type] ...");
+      System.out.println("The following types are available:");
+      System.out.println(" * text");
+      System.out.println(" * numeric");
+      System.out.println(" * date");
+      System.out.println("Example: http://localhost:9200 dashboard post 100 someFile.txt id:numeric title:text");
       System.exit(1);
     }
 
     String esBaseUrl = args[0];
     String esIndexName = args[1];
-    String searchFieldName = args[2];
+    String esTypeName = args[2];
     String eventsCount = args[3];
     String dictionaryFile = args[4];
+
+    StringBuilder fields = new StringBuilder();
+    fields.append(args[5]);
+    if (args.length > 6) {
+      for (int i = 6; i < args.length; i++) {
+        fields.append(" ").append(args[i]);
+      }
+    }
 
     PlayerConfig config = new PlayerConfig(PlayerRunner.PLAYER_CLASS_CONFIG_KEY, RealTimePlayer.class.getName(),
         RealTimePlayer.MIN_ACTION_DELAY_KEY, "20", RealTimePlayer.MAX_ACTION_DELAY_KEY, "1000",
         RealTimePlayer.TIME_TO_WORK_KEY, "5400", RealTimePlayer.SOURCES_THREADS_COUNT_KEY, "3",
         RealTimePlayer.SOURCES_PER_THREAD_COUNT_KEY, "4", PlayerRunner.SOURCE_FACTORY_CLASS_CONFIG_KEY,
         SimpleSourceFactory.class.getName(), SimpleSourceFactory.SOURCE_CLASS_CONFIG_KEY,
-        SearchDictionaryPhraseEventSource.class.getName(), SearchDictionaryPhraseEventSource.SEARCH_FIELD_NAME_KEY,
-        searchFieldName, SearchDictionaryPhraseEventSource.MAX_EVENTS_KEY, eventsCount,
-        SearchDictionaryPhraseEventSource.DICTIONARY_FILE_NAME_KEY, dictionaryFile, PlayerRunner.SINK_CLASS_CONFIG_KEY,
-        SimpleQueryEsSink.class.getName(), SimpleQueryEsSink.ES_BASE_URL_KEY, esBaseUrl,
-        SimpleQueryEsSink.ES_INDEX_NAME_KEY, esIndexName);
+        DataDictionaryEventSource.class.getName(), FiniteEventSource.MAX_EVENTS_KEY, eventsCount,
+        DataDictionaryEventSource.DICTIONARY_FILE_NAME_KEY, dictionaryFile, DataDictionaryEventSource.FIELDS_KEY,
+        fields.toString(), PlayerRunner.SINK_CLASS_CONFIG_KEY, SimpleJSONDataESSink.class.getName(),
+        SimpleJSONDataESSink.ES_BASE_URL_KEY, esBaseUrl, SimpleJSONDataESSink.ES_INDEX_NAME_KEY, esIndexName,
+        SimpleJSONDataESSink.ES_TYPE_NAME_KEY, esTypeName);
     PlayerRunner.play(config);
   }
 }

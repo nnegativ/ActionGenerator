@@ -13,46 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.ag.es;
+package com.sematext.ag.es.sink;
 
-import java.io.IOException;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import com.sematext.ag.PlayerConfig;
-import com.sematext.ag.Sink;
 import com.sematext.ag.event.SimpleSearchEvent;
+import com.sematext.ag.sink.AbstractHttpSink;
+import com.sematext.ag.sink.Sink;
 
 /**
  * {@link Sink} implementation for ElasticSearch query.
  * 
  * @author sematext, http://www.sematext.com/
  */
-public class SimpleQueryEsSink extends Sink<SimpleSearchEvent> {
+public class SimpleQueryEsSink extends AbstractHttpSink<SimpleSearchEvent> {
   public static final String ES_BASE_URL_KEY = "simpleEsSink.esBaseUrl";
   public static final String ES_INDEX_NAME_KEY = "simpleEsSink.indexName";
   private static final Logger LOG = Logger.getLogger(SimpleQueryEsSink.class);
-  private static final HttpClient HTTP_CLIENT_INSTANCE;
   private static final String ES_QUERY_TEMPLATE = "/${INDEX_NAME}/_search?q=${QUERY_STRING}";
   private String esBaseUrl;
   private String indexName;
 
-  static {
-    ThreadSafeClientConnManager tsccm = new ThreadSafeClientConnManager();
-    HTTP_CLIENT_INSTANCE = new DefaultHttpClient(tsccm);
-  }
-
   /**
    * (non-Javadoc)
    * 
-   * @see com.sematext.ag.Sink#init(com.sematext.ag.PlayerConfig)
+   * @see com.sematext.ag.sink.Sink#init(com.sematext.ag.PlayerConfig)
    */
   @Override
   public void init(PlayerConfig config) {
@@ -71,25 +58,13 @@ public class SimpleQueryEsSink extends Sink<SimpleSearchEvent> {
   /**
    * (non-Javadoc)
    * 
-   * @see com.sematext.ag.Sink#write(com.sematext.ag.Event)
+   * @see com.sematext.ag.sink.Sink#write(com.sematext.ag.Event)
    */
   @Override
   public boolean write(SimpleSearchEvent event) {
-    HttpGet httpget = new HttpGet(esBaseUrl
+    HttpGet httpGet = new HttpGet(esBaseUrl
         + ES_QUERY_TEMPLATE.replace("${INDEX_NAME}", indexName).replace("${QUERY_STRING}", event.getQueryString()));
-    LOG.info("Sending ES search event " + httpget.getRequestLine());
-    try {
-      HttpResponse response = HTTP_CLIENT_INSTANCE.execute(httpget);
-      LOG.info("Event sent");
-      if (response.getStatusLine().getStatusCode() == 404) {
-        return false;
-      }
-      HttpEntity entity = response.getEntity();
-      EntityUtils.consume(entity);
-    } catch (IOException e) {
-      LOG.error("Sending event failed", e);
-      return false;
-    }
-    return true;
+    LOG.info("Sending ES search event " + httpGet.getRequestLine());
+    return execute(httpGet);
   }
 }

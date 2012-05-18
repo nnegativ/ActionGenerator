@@ -13,35 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.ag;
+package com.sematext.ag.source;
+
+import com.sematext.ag.PlayerConfig;
+import com.sematext.ag.event.Event;
+import com.sematext.ag.exception.InitializationFailedException;
 
 /**
- * Exception thrown when initialization error occurs.
+ * Abstract base class for {@link Event} source.
  * 
  * @author sematext, http://www.sematext.com/
  */
-public class InitializationFailedException extends Exception {
-  private static final long serialVersionUID = 6055746873175504471L;
-
+public abstract class Source {
   /**
-   * Constructor.
+   * Initialize source.
    * 
-   * @param message
-   *          error message
+   * @param config
+   *          source configuration
+   * @throws InitializationFailedException
+   *           thrown when source initializaion happens
    */
-  public InitializationFailedException(String message) {
-    super(message);
+  public void init(PlayerConfig config) throws InitializationFailedException {
   }
 
   /**
-   * Constructor.
-   * 
-   * @param message
-   *          error message
-   * @param cause
-   *          error cause
+   * Close source.
    */
-  public InitializationFailedException(String message, Throwable cause) {
-    super(message, cause);
+  public void close() {
+    // DO NOTHING BY DEFAULT
   }
+
+  /**
+   * Return next event.
+   * 
+   * @return event
+   */
+  public abstract Event nextEvent();
 }

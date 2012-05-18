@@ -13,32 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.ag;
+package com.sematext.ag.exception;
 
 /**
- * Abstract base class for {@link Source} factory.
+ * Exception thrown when initialization error occurs.
  * 
  * @author sematext, http://www.sematext.com/
  */
-public abstract class SourceFactory {
+public class InitializationFailedException extends Exception {
+  private static final long serialVersionUID = 6055746873175504471L;
+
   /**
-   * Initialize source factory.
+   * Constructor.
    * 
-   * @param config
-   *          configuration
-   * @throws InitializationFailedException
-   *           thrown when initialization error occurs
+   * @param message
+   *          error message
    */
-  public void init(PlayerConfig config) throws InitializationFailedException {
-    // DO NOTHING BY DEFAULT
+  public InitializationFailedException(String message) {
+    super(message);
   }
 
   /**
-   * Creates {@link Source} instance.
+   * Constructor.
    * 
-   * @return Source instance
-   * @throws InitializationFailedException
-   *           thrown when initialization error occurs
+   * @param message
+   *          error message
+   * @param cause
+   *          error cause
    */
-  public abstract Source create() throws InitializationFailedException;
+  public InitializationFailedException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }
