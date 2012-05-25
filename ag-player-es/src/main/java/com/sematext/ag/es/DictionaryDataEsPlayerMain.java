@@ -23,8 +23,8 @@ import com.sematext.ag.source.FiniteEventSource;
 import com.sematext.ag.source.SimpleSourceFactory;
 import com.sematext.ag.source.dictionary.DataDictionaryEventSource;
 
-public final class DictionaryDataESPlayerMain {
-  private DictionaryDataESPlayerMain() {
+public final class DictionaryDataEsPlayerMain {
+  private DictionaryDataEsPlayerMain() {
   }
 
   public static void main(String[] args) {
