@@ -92,6 +92,7 @@ public class RealTimePlayer extends Player {
         LOG.error(e); // TODO: handle properly
       }
     }
+    System.out.println("BLE");
   }
 
   private static class UserGroupThread extends Thread {
@@ -126,9 +127,11 @@ public class RealTimePlayer extends Player {
           sink.write(event);
         }
         try {
-          long sleepTime = (long) ((minActionDelay + Math.random() * (maxActionDelay - minActionDelay)) / sourceGroup
-              .size());
-          Thread.sleep(sleepTime);
+          if (sourceGroup.size() > 0) {
+            long sleepTime = (long) ((minActionDelay + Math.random() * (maxActionDelay - minActionDelay)) / sourceGroup
+                .size());
+            Thread.sleep(sleepTime);
+          }
         } catch (InterruptedException e) {
           LOG.error(e); // TODO: handle properly
         }
@@ -137,7 +140,7 @@ public class RealTimePlayer extends Player {
         close(source);
       }
     }
-    
+
     private void close(Source source) {
       LOG.info("Closing source: " + source + "...");
       source.close();
