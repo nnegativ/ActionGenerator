@@ -92,7 +92,6 @@ public class RealTimePlayer extends Player {
         LOG.error(e); // TODO: handle properly
       }
     }
-    System.out.println("BLE");
   }
 
   private static class UserGroupThread extends Thread {
