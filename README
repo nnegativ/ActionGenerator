@@ -1,1 +1,94 @@
-This project is work in progress. Documentation will be provided soon.
+1. What is ActionGenerator
+ActionGenerator is a project focused on generating events of your choice. 
+Imagine that you want to feed your search engine with millions of documents 
+or you want to run stress test and see if your application can work under 
+load for numerous hours. That’s exactly where you can use ActionGenerator. 
+By developing your event type, a sink to consume those event and events 
+source you are ready to go, the rest is done by ActionGenerator itself, so 
+you only need to worry about the relevant part – your actions.
+
+2. Project Layout
+Currently, the ActionGenerator project is divided into three modules:
+ * ag-player      – common classes that enable implementing and running 
+                    your own ActionGenerator for virtually any kind of 
+                    actions.
+ * ag-player-es   – ActionGenerator implementation for ElasticSearch.
+ * ag-player-solr – ActionGenerator implementation for Apache Solr.
+
+3. Usage
+The following action generators are available out of the box:
+ a) Apache Solr
+  * RandomQueriesSolrPlayerMain - generates random queries. You need to
+    provide the following parameters:
+    - Apache Solr core search handler URL address
+    - name of the field queries should be run against
+    - number of events
+    For example:
+    java -cp ag-player-solr-0.1.0-SNAPSHOT-withdeps.jar com.sematext.ag.solr.RandomQueriesSolrPlayerMain http://localhost:8983/solr/documents name 1000
+  * DictionarySolrPlayerMain - generates queries with the use of the 
+    provided dictionary. You need to provide the following parameters:
+    - Apache Solr search handler URL address
+    - name of the field queries should be run against
+    - number of events
+    - dictionary path
+    For example:
+    java -cp ag-player-solr-0.1.0-SNAPSHOT-withdeps.jar com.sematext.ag.solr.DictionarySolrPlayerMain http://localhost:8983/solr/documents name 1000 dict.txt
+  * DictionaryDataSolrPlayerMain - generates data and indexes them 
+    into provided instance. You need to provide the following 
+    parameters:
+    - Apache Solr update handler URL address
+    - number of events 
+    - dictionary path
+    - one or more fields and its types
+    For example:
+    java -cp ag-player-solr-0.1.0-SNAPSHOT-withdeps.jar com.sematext.ag.solr.DictionaryDataSolrPlayerMain http://localhost:8983/solr/documents/update/ 100000 dict.txt id:numeric title:text likes:numeric
+ b) ElasticSearch
+  * SimpleEsPlayerMain - generates random queries. You need to provide
+    the following parameters:
+    - base URL
+    - index name
+    - name of the field queries should be run against
+    - number of events
+    For example:
+    java -cp ag-player-es-0.1.0-SNAPSHOT-withdeps.jar com.sematext.ag.es.SimpleEsPlayerMain http://localhost:9200/ documents text 1000
+  * DictionaryEsPlayerMain - generates queries with the use of the 
+    provided dictionary. You need to provide the following parameters:
+    - base URL
+    - index name
+    - name of the field queries should be run against
+    - number of events
+    - dictionary path
+    For example:
+    java -cp ag-player-es-0.1.0-SNAPSHOT-withdeps.jar com.sematext.ag.es.DictionaryEsPlayerMain http://localhost:9200/ documents text 1000 dict.txt
+  * DictionaryDataEsPlayerMain - generates data and indexes them 
+    into provided instance. You need to provide the following 
+    parameters:
+    - base URL
+    - index name
+    - name of the field queries should be run against
+    - number of events
+    - dictionary path
+    - one or more fields and its types
+    For example:
+    java -cp ag-player-es-0.1.0-SNAPSHOT-withdeps.jar com.sematext.ag.es.DictionaryDataEsPlayerMain http://localhost:9200/ documents document 100000 dict.txt id:numeric title:text likes:numeric
+
+4. Supported Targets
+Current implementation allows you to generate queries and data to the 
+following targets:
+ * Apache Solr 
+ * ElasticSearch. 
+
+5. Adding Support for Other Targets
+In order to develop your own action generator, you need to provide the
+following implementations:
+ * Event class implementation that will represent a single event you want 
+   to be generated. 
+ * Sink implementation, which consumes your events. 
+ * Source implementation that will be responsible for creating your
+   events.
+
+6. Licensing
+Action Generator is released under Apache License, Version 2.0
+
+7. Contact
+For any questions ping @sematext, @kucrafal, or @abaranau.
