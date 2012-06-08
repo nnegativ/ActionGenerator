@@ -80,7 +80,7 @@ public class SimpleJSONDataESSink extends AbstractHttpSink<SimpleDataEvent> {
     try {
       postEntity = new StringEntity(JSONUtils.getElasticSearchAddDocument(event.pairs()), "UTF-8");
       postMethod.setEntity(postEntity);
-      System.out.println(postMethod.toString());
+      postMethod.expectContinue();
       return execute(postMethod);
     } catch (UnsupportedEncodingException uee) {
       LOG.error("Error sending event: " + uee);

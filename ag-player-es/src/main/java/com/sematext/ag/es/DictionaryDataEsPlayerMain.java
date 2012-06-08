@@ -18,7 +18,6 @@ package com.sematext.ag.es;
 import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.PlayerRunner;
 import com.sematext.ag.es.sink.SimpleJSONDataESSink;
-import com.sematext.ag.player.RealTimePlayer;
 import com.sematext.ag.source.FiniteEventSource;
 import com.sematext.ag.source.SimpleSourceFactory;
 import com.sematext.ag.source.dictionary.DataDictionaryEventSource;
@@ -53,11 +52,7 @@ public final class DictionaryDataEsPlayerMain {
       }
     }
 
-    PlayerConfig config = new PlayerConfig(PlayerRunner.PLAYER_CLASS_CONFIG_KEY, RealTimePlayer.class.getName(),
-        RealTimePlayer.MIN_ACTION_DELAY_KEY, "20", RealTimePlayer.MAX_ACTION_DELAY_KEY, "1000",
-        RealTimePlayer.TIME_TO_WORK_KEY, "5400", RealTimePlayer.SOURCES_THREADS_COUNT_KEY, "3",
-        RealTimePlayer.SOURCES_PER_THREAD_COUNT_KEY, "4", PlayerRunner.SOURCE_FACTORY_CLASS_CONFIG_KEY,
-        SimpleSourceFactory.class.getName(), SimpleSourceFactory.SOURCE_CLASS_CONFIG_KEY,
+    PlayerConfig config = new PlayerConfig(SimpleSourceFactory.SOURCE_CLASS_CONFIG_KEY,
         DataDictionaryEventSource.class.getName(), FiniteEventSource.MAX_EVENTS_KEY, eventsCount,
         DataDictionaryEventSource.DICTIONARY_FILE_NAME_KEY, dictionaryFile, DataDictionaryEventSource.FIELDS_KEY,
         fields.toString(), PlayerRunner.SINK_CLASS_CONFIG_KEY, SimpleJSONDataESSink.class.getName(),

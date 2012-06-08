@@ -15,6 +15,7 @@
  */
 package com.sematext.ag;
 
+import com.sematext.ag.config.Configurable;
 import com.sematext.ag.exception.InitializationFailedException;
 
 import java.io.FileInputStream;
@@ -29,7 +30,7 @@ import java.util.PropertyResourceBundle;
  * 
  * @author sematext, http://www.sematext.com/
  */
-public class PlayerConfig {
+public class PlayerConfig extends Configurable {
   private Map<String, String> properties = new HashMap<String, String>();
 
   /**
@@ -53,6 +54,7 @@ public class PlayerConfig {
    *           thrown when I/O error occurs
    */
   public PlayerConfig(InputStream configAsStream) throws IOException {
+    super.init();
     PropertyResourceBundle bundle = new PropertyResourceBundle(configAsStream);
     for (String key : bundle.keySet()) {
       properties.put(key, bundle.getString(key));
@@ -68,13 +70,13 @@ public class PlayerConfig {
    *          key and values
    */
   public PlayerConfig(String key, String... valueAndOtherProperties) {
+    super.init();
     if (valueAndOtherProperties.length % 2 != 1) {
-      throw new IllegalArgumentException("This ctor accepts pairs of String values, but got "
+      throw new IllegalArgumentException("This constructor accepts pairs of String values, but got "
           + (valueAndOtherProperties.length + 1) + "params.");
     }
     Map<String, String> properties = new HashMap<String, String>();
     properties.put(key, valueAndOtherProperties[0]);
-
     for (int i = 1; i < valueAndOtherProperties.length; i += 2) {
       properties.put(valueAndOtherProperties[i], valueAndOtherProperties[i + 1]);
     }
@@ -88,6 +90,7 @@ public class PlayerConfig {
    *          configuration properties
    */
   public PlayerConfig(Map<String, String> properties) {
+    super.init();
     this.properties = properties;
   }
 
@@ -99,7 +102,11 @@ public class PlayerConfig {
    * @return property value
    */
   public String get(String key) {
-    return properties.get(key);
+    if (properties.get(key) != null) {
+      return properties.get(key);
+    } else {
+      return getConfigurationValue(key);
+    }
   }
 
   /**
@@ -111,7 +118,7 @@ public class PlayerConfig {
    *           throw when a given property is not defined
    */
   public void checkRequired(String key) throws InitializationFailedException {
-    if (properties.get(key) == null) {
+    if (properties.get(key) == null && getConfigurationValue(key) == null) {
       throw new InitializationFailedException("Missing required property in config: " + key);
     }
   }

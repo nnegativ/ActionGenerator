@@ -21,13 +21,15 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
+import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.event.Event;
+import com.sematext.ag.exception.InitializationFailedException;
 
 /**
  * Abstract base {@link Sink} implementation for sinks using HTTP calls.
@@ -35,19 +37,25 @@ import com.sematext.ag.event.Event;
  * @author sematext, http://www.sematext.com/
  */
 public abstract class AbstractHttpSink<T extends Event> extends Sink<T> {
-  private static final Logger LOG = Logger.getLogger(AbstractHttpSink.class);
+  public static final Logger LOG = Logger.getLogger(AbstractHttpSink.class);
+  public static final String MAXIMUM_CONNECTIONS_PER_ROUTE_KEY = "abstracthttpsink.max_conn_per_route";
+  public static final String MAXIMUM_CONNECTIONS_TOTAL_KEY = "abstracthttpsink.max_conn_total";
+  public static final int DEFAULT_MAXIMUM_CONNECTIONS_PER_ROUTE = 100;
+  public static final int DEFAULT_MAXIMUM_CONNECTIONS_TOTAL = 100;
   private static final HttpClient HTTP_CLIENT_INSTANCE;
 
   static {
-    ThreadSafeClientConnManager tsccm = new ThreadSafeClientConnManager();
-    HTTP_CLIENT_INSTANCE = new DefaultHttpClient(tsccm);
+    PoolingClientConnectionManager pccm = new PoolingClientConnectionManager();
+    pccm.setDefaultMaxPerRoute(DEFAULT_MAXIMUM_CONNECTIONS_PER_ROUTE);
+    pccm.setMaxTotal(DEFAULT_MAXIMUM_CONNECTIONS_TOTAL);
+    HTTP_CLIENT_INSTANCE = new DefaultHttpClient(pccm);
   }
 
   /**
    * Executes HTTP request.
    * 
    * @param request
-   *          request to exectue
+   *          request to execute
    * @return <code>true</code> if request was run successfully, <code>false</code> otherwise
    */
   public boolean execute(HttpRequestBase request) {
@@ -64,6 +72,27 @@ public abstract class AbstractHttpSink<T extends Event> extends Sink<T> {
     } catch (IOException e) {
       LOG.error("Sending event failed", e);
       return false;
+    } finally {
+      request.releaseConnection();
+    }
+  }
+
+  /**
+   * (non-Javadoc)
+   * 
+   * @see com.sematext.ag.sink.Sink#init(com.sematext.ag.PlayerConfig)
+   */
+  @Override
+  public void init(PlayerConfig config) throws InitializationFailedException {
+    super.init(config);
+    PoolingClientConnectionManager connectionManager = (PoolingClientConnectionManager) HTTP_CLIENT_INSTANCE
+        .getConnectionManager();
+    if (config.get(MAXIMUM_CONNECTIONS_PER_ROUTE_KEY) != null
+        && !config.get(MAXIMUM_CONNECTIONS_PER_ROUTE_KEY).isEmpty()) {
+      connectionManager.setDefaultMaxPerRoute(Integer.parseInt(config.get(MAXIMUM_CONNECTIONS_PER_ROUTE_KEY)));
+    }
+    if (config.get(MAXIMUM_CONNECTIONS_TOTAL_KEY) != null && !config.get(MAXIMUM_CONNECTIONS_TOTAL_KEY).isEmpty()) {
+      connectionManager.setMaxTotal(Integer.parseInt(config.get(MAXIMUM_CONNECTIONS_TOTAL_KEY)));
     }
   }
 }

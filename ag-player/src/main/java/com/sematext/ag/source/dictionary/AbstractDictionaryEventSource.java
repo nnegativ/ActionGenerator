@@ -69,7 +69,7 @@ public abstract class AbstractDictionaryEventSource<T extends Event> extends Fin
       throw new IllegalArgumentException("File " + f.getName() + " under key " + DICTIONARY_FILE_NAME_KEY
           + " not readable!");
     }
-    
+
   }
 
   /**

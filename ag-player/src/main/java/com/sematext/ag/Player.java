@@ -35,7 +35,7 @@ public abstract class Player {
    *           thrown when initialization error occurs
    */
   public void init(PlayerConfig config) throws InitializationFailedException {
-    // DO NOTHING BY DEFAULT
+    // by default do nothing
   }
 
   /**

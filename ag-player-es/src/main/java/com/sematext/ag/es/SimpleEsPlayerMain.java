@@ -18,7 +18,6 @@ package com.sematext.ag.es;
 import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.PlayerRunner;
 import com.sematext.ag.es.sink.SimpleQueryEsSink;
-import com.sematext.ag.player.RealTimePlayer;
 import com.sematext.ag.source.SimpleSourceFactory;
 import com.sematext.ag.source.random.SearchRandomNumberEventSource;
 
@@ -46,11 +45,7 @@ public final class SimpleEsPlayerMain {
     String searchFieldName = args[2];
     String eventsCount = args[3];
 
-    PlayerConfig config = new PlayerConfig(PlayerRunner.PLAYER_CLASS_CONFIG_KEY, RealTimePlayer.class.getName(),
-        RealTimePlayer.MIN_ACTION_DELAY_KEY, "20", RealTimePlayer.MAX_ACTION_DELAY_KEY, "1000",
-        RealTimePlayer.TIME_TO_WORK_KEY, "5400", RealTimePlayer.SOURCES_THREADS_COUNT_KEY, "2",
-        RealTimePlayer.SOURCES_PER_THREAD_COUNT_KEY, "3", PlayerRunner.SOURCE_FACTORY_CLASS_CONFIG_KEY,
-        SimpleSourceFactory.class.getName(), SimpleSourceFactory.SOURCE_CLASS_CONFIG_KEY,
+    PlayerConfig config = new PlayerConfig(SimpleSourceFactory.SOURCE_CLASS_CONFIG_KEY,
         SearchRandomNumberEventSource.class.getName(), SearchRandomNumberEventSource.SEARCH_FIELD_NAME_KEY,
         searchFieldName, SearchRandomNumberEventSource.MAX_EVENTS_KEY, eventsCount, PlayerRunner.SINK_CLASS_CONFIG_KEY,
         SimpleQueryEsSink.class.getName(), SimpleQueryEsSink.ES_BASE_URL_KEY, esBaseUrl,

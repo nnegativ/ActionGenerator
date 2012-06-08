@@ -17,7 +17,6 @@ package com.sematext.ag.solr;
 
 import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.PlayerRunner;
-import com.sematext.ag.player.RealTimePlayer;
 import com.sematext.ag.solr.sink.SimpleQuerySolrSink;
 import com.sematext.ag.source.SimpleSourceFactory;
 import com.sematext.ag.source.random.SearchRandomNumberEventSource;
@@ -45,11 +44,7 @@ public final class RandomQueriesSolrPlayerMain {
     String searchFieldName = args[1];
     String eventsCount = args[2];
 
-    PlayerConfig config = new PlayerConfig(PlayerRunner.PLAYER_CLASS_CONFIG_KEY, RealTimePlayer.class.getName(),
-        RealTimePlayer.MIN_ACTION_DELAY_KEY, "20", RealTimePlayer.MAX_ACTION_DELAY_KEY, "1000",
-        RealTimePlayer.TIME_TO_WORK_KEY, "5400", RealTimePlayer.SOURCES_THREADS_COUNT_KEY, "2",
-        RealTimePlayer.SOURCES_PER_THREAD_COUNT_KEY, "3", PlayerRunner.SOURCE_FACTORY_CLASS_CONFIG_KEY,
-        SimpleSourceFactory.class.getName(), SimpleSourceFactory.SOURCE_CLASS_CONFIG_KEY,
+    PlayerConfig config = new PlayerConfig(SimpleSourceFactory.SOURCE_CLASS_CONFIG_KEY,
         SearchRandomNumberEventSource.class.getName(), SearchRandomNumberEventSource.SEARCH_FIELD_NAME_KEY,
         searchFieldName, SearchRandomNumberEventSource.MAX_EVENTS_KEY, eventsCount, PlayerRunner.SINK_CLASS_CONFIG_KEY,
         SimpleQuerySolrSink.class.getName(), SimpleQuerySolrSink.SOLR_URL_KEY, solrUrl);
