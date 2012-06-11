@@ -59,7 +59,11 @@ public class SimplePlayer extends Player {
   protected void play(Sink<Event> sink, Source source) {
     Event e = source.nextEvent();
     while (null != e) {
-      sink.write(e);
+      try {
+        sink.write(e);
+      } catch (Exception ex) {
+        LOG.error("Error writing to sink, skipping event. Cause: " + ex.getCause());
+      }
       e = source.nextEvent();
     }
   }
