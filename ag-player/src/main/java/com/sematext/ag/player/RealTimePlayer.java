@@ -53,6 +53,7 @@ public class RealTimePlayer extends Player {
    */
   @Override
   public void init(PlayerConfig config) throws InitializationFailedException {
+    super.init(config);
     validate(config);
     timeToWork = Long.valueOf(config.get(TIME_TO_WORK_KEY)) * 1000;
     minActionDelay = Long.valueOf(config.get(MIN_ACTION_DELAY_KEY));

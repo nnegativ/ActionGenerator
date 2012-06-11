@@ -15,6 +15,12 @@
  */
 package com.sematext.ag.sink;
 
+import com.yammer.metrics.Metrics;
+import com.yammer.metrics.core.Meter;
+import com.yammer.metrics.core.Timer;
+
+import java.util.concurrent.TimeUnit;
+
 import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.event.Event;
 import com.sematext.ag.exception.InitializationFailedException;
@@ -25,6 +31,10 @@ import com.sematext.ag.exception.InitializationFailedException;
  * @author sematext, http://www.sematext.com/
  */
 public abstract class Sink<T extends Event> {
+  protected final Meter REQUESTS = Metrics.newMeter(Sink.class, "requests", "requests", TimeUnit.SECONDS);
+  protected final Timer TIMER = Metrics.newTimer(Sink.class, "responses", TimeUnit.MILLISECONDS,
+      TimeUnit.SECONDS);
+
   /**
    * Initializes sink.
    * 

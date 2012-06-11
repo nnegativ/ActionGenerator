@@ -15,6 +15,8 @@
  */
 package com.sematext.ag.sink;
 
+import com.yammer.metrics.core.TimerContext;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -60,6 +62,8 @@ public abstract class AbstractHttpSink<T extends Event> extends Sink<T> {
    */
   public boolean execute(HttpRequestBase request) {
     LOG.info("Sending event");
+    REQUESTS.mark();
+    final TimerContext context = TIMER.time();
     try {
       HttpResponse response = HTTP_CLIENT_INSTANCE.execute(request);
       LOG.info("Event sent");
@@ -74,6 +78,7 @@ public abstract class AbstractHttpSink<T extends Event> extends Sink<T> {
       return false;
     } finally {
       request.releaseConnection();
+      context.stop();
     }
   }
 

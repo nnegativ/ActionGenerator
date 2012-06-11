@@ -17,6 +17,7 @@ package com.sematext.ag;
 
 import com.sematext.ag.event.Event;
 import com.sematext.ag.exception.InitializationFailedException;
+import com.sematext.ag.metric.MetricsHandler;
 import com.sematext.ag.sink.Sink;
 import com.sematext.ag.source.SourceFactory;
 
@@ -35,7 +36,7 @@ public abstract class Player {
    *           thrown when initialization error occurs
    */
   public void init(PlayerConfig config) throws InitializationFailedException {
-    // by default do nothing
+    MetricsHandler.initMetrics();
   }
 
   /**

@@ -39,7 +39,7 @@ public final class DictionaryEsPlayerMain {
       System.out.println("Example: http://localhost:9200 dashboard text 10000 someFile.txt");
       System.exit(1);
     }
-
+    
     String esBaseUrl = args[0];
     String esIndexName = args[1];
     String searchFieldName = args[2];
