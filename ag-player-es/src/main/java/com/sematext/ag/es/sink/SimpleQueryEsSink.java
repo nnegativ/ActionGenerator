@@ -63,7 +63,8 @@ public class SimpleQueryEsSink extends AbstractHttpSink<SimpleSearchEvent> {
   @Override
   public boolean write(SimpleSearchEvent event) {
     HttpGet httpGet = new HttpGet(esBaseUrl
-        + ES_QUERY_TEMPLATE.replace("${INDEX_NAME}", indexName).replace("${QUERY_STRING}", event.getQueryString()));
+        + ES_QUERY_TEMPLATE.replace("${INDEX_NAME}", indexName).replace("${QUERY_STRING}",
+            event.getQueryString().replace(" ", "+")));
     LOG.info("Sending ES search event " + httpGet.getRequestLine());
     return execute(httpGet);
   }
