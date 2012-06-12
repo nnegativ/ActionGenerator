@@ -1,24 +1,51 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>com.sematext.ag</groupId>
     <artifactId>ag-parent</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
   </parent>
-
+  
   <groupId>com.sematext.ag</groupId>
   <artifactId>ag-player-es</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.1.0</version>
   <name>AG Player for ES</name>
   <description>AG Player for ES</description>
   <url>http://maven.apache.org</url>
 
-  <properties>
-  </properties>
-
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
+  <scm>
+    <connection>scm:git:git@github.com:sematext/ActionGenerator.git</connection>
+    <developerConnection>scm:git:git@github.com:sematext/ActionGenerator.git</developerConnection>
+    <url>https://github.com/sematext/ActionGenerator</url>
+  </scm>
+  
+  <organization>
+    <name>Sematext</name>
+    <url>http://sematext.com</url>
+  </organization>
+  
+  <developers>
+    <developer>
+      <id>rkuc</id>
+      <name>Rafał Kuć</name>
+      <email>rafal.kuc@sematext.com</email>
+    </developer>
+    <developer>
+      <id>alex</id>
+      <name>Alex Baranau</name>
+      <email>alex.baranov@sematext.com</email>
+    </developer>
+  </developers>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <testSourceDirectory>src/test/java</testSourceDirectory>
@@ -75,18 +102,35 @@
     </plugins>
   </build>
 
-  <distributionManagement>
-    <repository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>sematext-releases-repo</id>
-      <url>svn:svn://svn.sematext.com/sematext_ext/maven-repo/release/</url>
-    </repository>
-    <snapshotRepository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>sematext-snapshots-repo</id>
-      <url>svn:svn://svn.sematext.com/sematext_ext/maven-repo/snapshot</url>
-    </snapshotRepository>
-  </distributionManagement>
+  <profiles>
+    <profile>
+      <id>release-sign-artifacts</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.1</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <dependencies>
     <!-- LOGGING -->

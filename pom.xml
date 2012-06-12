@@ -1,12 +1,51 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+  
   <groupId>com.sematext.ag</groupId>
   <artifactId>ag-parent</artifactId>
   <packaging>pom</packaging>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.1.0</version>
   <name>AG Parent</name>
-  <url>http://maven.apache.org</url>
+  <description>Parent module for ActionGenerator</description>
+  <url>http://sematext.com/open-source/</url>
+  
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
+  <scm>
+    <connection>scm:git:git@github.com:sematext/ActionGenerator.git</connection>
+    <developerConnection>scm:git:git@github.com:sematext/ActionGenerator.git</developerConnection>
+    <url>https://github.com/sematext/ActionGenerator</url>
+  </scm>  
+
+  <organization>
+    <name>Sematext</name>
+    <url>http://sematext.com</url>
+  </organization>
+  
+  <developers>
+    <developer>
+      <id>rkuc</id>
+      <name>Rafał Kuć</name>
+      <email>rafal.kuc@sematext.com</email>
+    </developer>
+    <developer>
+      <id>alex</id>
+      <name>Alex Baranau</name>
+      <email>alex.baranov@sematext.com</email>
+    </developer>
+  </developers>
 
   <properties>
     <maven.compile.source>1.6</maven.compile.source>
@@ -14,7 +53,6 @@
     <commons-logging.version>1.1.1</commons-logging.version>
     <log4j.version>1.2.15</log4j.version>
     <junit.version>4.5</junit.version>
-    <!-- easymock.version>2.4</easymock.version-->
     <checkstyle.config.location>../checkstyle.xml</checkstyle.config.location>
   </properties>
 
@@ -38,65 +76,7 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
       </plugin>
-
     </plugins>
-
-    <pluginManagement>
-      <plugins>
-        <!-- 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>2.2</version>
-          <executions>
-            <execution>
-              <phase>compile</phase>
-              <goals>
-                <goal>check</goal>
-              </goals>
-            </execution>
-          </executions>
-
-          <dependencies>
-            <dependency>
-              <groupId>checkstyle</groupId>
-              <artifactId>checkstyle</artifactId>
-              <version>4.4</version>
-            </dependency>
-
-            <dependency>
-              <groupId>checkstyle</groupId>
-              <artifactId>checkstyle-optional</artifactId>
-              <version>4.4</version>
-            </dependency>
-
-            <dependency>
-              <groupId>xerces</groupId>
-              <artifactId>xercesImpl</artifactId>
-              <version>2.8.1</version>
-            </dependency>
-          </dependencies>
-        </plugin>
-         -->
-
-        <!-- 
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>findbugs-maven-plugin</artifactId>
-          <version>2.0.1</version>
-          <executions>
-            <execution>
-              <phase>compile</phase>
-              <goals>
-                <goal>check</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        -->
-
-      </plugins>
-    </pluginManagement>
   </build>
 
   <reporting>
@@ -120,6 +100,36 @@
     <module>ag-player-es</module>
     <module>ag-player-solr</module>
   </modules>
+
+  <profiles>
+    <profile>
+      <id>release-sign-artifacts</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.1</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <dependencies>
     <dependency>
@@ -159,44 +169,5 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
-
-    <!-- dependency>
-      <groupId>org.easymock</groupId>
-      <artifactId>easymock</artifactId>
-      <version>${easymock.version}</version>
-      <scope>test</scope>
-    </dependency-->
-
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>default</id>
-      <url>http://repo1.maven.org/maven2/</url>
-    </repository>
-    <repository>
-      <id>apache_dev_repo</id>
-      <url>http://repository.apache.org/snapshots</url>
-    </repository>
-    <repository>
-      <id>apache_dev_repo_alternate</id>
-      <url>http://people.apache.org/repo/m2-snapshot-repository/</url>
-    </repository>
-    <repository>
-      <id>java_net_repo</id>
-      <url>http://download.java.net/maven/2/</url>
-    </repository>
-    <repository>
-      <id>codehaus_repo</id>
-      <url>http://repository.codehaus.org/</url>
-    </repository>
-    <repository>
-      <id>sematext-releases-repo</id>
-      <url>svn:svn://svn.sematext.com/sematext_ext/maven-repo/release</url>
-    </repository>
-    <repository>
-      <id>sematext-snapshots-repo</id>
-      <url>svn:svn://svn.sematext.com/sematext_ext/maven-repo/snapshot</url>
-    </repository>
-  </repositories>
 </project>
