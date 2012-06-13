@@ -4,13 +4,13 @@
   <parent>
     <groupId>com.sematext.ag</groupId>
     <artifactId>ag-parent</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
   </parent>
   
   <groupId>com.sematext.ag</groupId>
   <artifactId>ag-player</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <name>AG Player</name>
   <description>AG Player</description>
   <url>http://maven.apache.org</url>

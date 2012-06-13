@@ -15,25 +15,19 @@
  */
 package com.sematext.ag.sink;
 
-import com.yammer.metrics.Metrics;
-import com.yammer.metrics.core.Meter;
-import com.yammer.metrics.core.Timer;
-
-import java.util.concurrent.TimeUnit;
-
 import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.event.Event;
 import com.sematext.ag.exception.InitializationFailedException;
+import com.sematext.ag.metric.BasicMetrics;
+import com.sematext.ag.metric.Measureable;
 
 /**
  * Abstract base class for {@link Event} sink.
  * 
  * @author sematext, http://www.sematext.com/
  */
-public abstract class Sink<T extends Event> {
-  protected final Meter REQUESTS = Metrics.newMeter(Sink.class, "requests", "requests", TimeUnit.SECONDS);
-  protected final Timer TIMER = Metrics.newTimer(Sink.class, "responses", TimeUnit.MILLISECONDS,
-      TimeUnit.SECONDS);
+public abstract class Sink<T extends Event> extends Measureable {
+  private BasicMetrics metrics;
 
   /**
    * Initializes sink.
@@ -44,7 +38,7 @@ public abstract class Sink<T extends Event> {
    *           thrown when initialization error occurs
    */
   public void init(PlayerConfig config) throws InitializationFailedException {
-    // DO NOTHING BY DEFAULT
+    metrics = getMetrics(getClass());
   }
 
   /**
@@ -52,6 +46,21 @@ public abstract class Sink<T extends Event> {
    */
   public void close() {
     // DO NOTHING BY DEFAULT
+  }
+
+  /**
+   * Starts metrics calculations for a given write.
+   */
+  public void startCounters() {
+    metrics.incrementRequests();
+    metrics.startTimer();
+  }
+
+  /**
+   * Ends metrics calculations for a given write.
+   */
+  public void endCounters() {
+    metrics.stopTimer();
   }
 
   /**

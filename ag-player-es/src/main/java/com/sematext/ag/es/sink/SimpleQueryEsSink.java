@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.event.SimpleSearchEvent;
+import com.sematext.ag.exception.InitializationFailedException;
 import com.sematext.ag.sink.AbstractHttpSink;
 import com.sematext.ag.sink.Sink;
 
@@ -42,7 +43,8 @@ public class SimpleQueryEsSink extends AbstractHttpSink<SimpleSearchEvent> {
    * @see com.sematext.ag.sink.Sink#init(com.sematext.ag.PlayerConfig)
    */
   @Override
-  public void init(PlayerConfig config) {
+  public void init(PlayerConfig config) throws InitializationFailedException {
+    super.init(config);
     esBaseUrl = config.get(ES_BASE_URL_KEY);
     indexName = config.get(ES_INDEX_NAME_KEY);
     if (esBaseUrl == null || "".equals(esBaseUrl.trim())) {

@@ -42,9 +42,7 @@ public class MetricsHandler {
     String enabled = System.getProperty(METRICS_ENABLED_KEY);
     String type = System.getProperty(METRICS_TYPE_KEY);
     String dir = System.getProperty(METRICS_DIR_KEY);
-
-    LOG.info("ENABLED:" + enabled + ", TYPE:" + type + ", DIR:" + dir);
-
+    
     File outputDir = null;
     MetricOutputType metricOutputType = null;
     if (Boolean.parseBoolean(enabled)) {

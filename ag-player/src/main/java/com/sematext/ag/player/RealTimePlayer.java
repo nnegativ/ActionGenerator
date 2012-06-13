@@ -125,7 +125,9 @@ public class RealTimePlayer extends Player {
           sourceGroup.remove(source);
         } else {
           try {
+            sink.startCounters();
             sink.write(event);
+            sink.endCounters();
           } catch (Exception ex) {
             LOG.error("Error writing to sink, skipping event. Cause: " + ex.getCause());
           }

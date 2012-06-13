@@ -61,6 +61,11 @@ public class TestConcept extends TestCase {
 
     @Override
     public void init(PlayerConfig config) {
+      try {
+        super.init(config);
+      } catch (Exception ex) {
+        fail();
+      }
       initialized = Boolean.valueOf(config.get("testSink.initialize"));
       writtenEvents = 0;
       writtenEventsSum = 0;

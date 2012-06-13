@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.event.SimpleSearchEvent;
+import com.sematext.ag.exception.InitializationFailedException;
 import com.sematext.ag.sink.AbstractHttpSink;
 import com.sematext.ag.sink.Sink;
 
@@ -40,7 +41,8 @@ public class SimpleQuerySolrSink extends AbstractHttpSink<SimpleSearchEvent> {
    * @see com.sematext.ag.sink.Sink#init(com.sematext.ag.PlayerConfig)
    */
   @Override
-  public void init(PlayerConfig config) {
+  public void init(PlayerConfig config) throws InitializationFailedException {
+    super.init(config);
     solrUrl = config.get(SOLR_URL_KEY);
     if (solrUrl == null || "".equals(solrUrl.trim())) {
       throw new IllegalArgumentException(this.getClass().getName() + " expects configuration property " + SOLR_URL_KEY);
