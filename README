@@ -87,8 +87,12 @@ following implementations:
  * Source implementation that will be responsible for creating your
    events.
 
-6. Licensing
+6. Maven Artifacts
+Maven artifacts of ActionGenerator project are published at 
+https://oss.sonatype.org/content/groups/public/
+
+7. Licensing
 Action Generator is released under Apache License, Version 2.0
 
-7. Contact
+8. Contact
 For any questions ping @sematext, @kucrafal, or @abaranau.
