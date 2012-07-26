@@ -7,7 +7,11 @@ By developing your event type, a sink to consume those event and events
 source you are ready to go, the rest is done by ActionGenerator itself, so 
 you only need to worry about the relevant part – your actions.
 
-2. Project Layout
+2. You can find blog posts describing ActionGenerator at the following URL:
+ * http://blog.sematext.com/2012/06/10/action-generator-part-one/
+ * http://blog.sematext.com/2012/07/22/actiongenerator-part-two/
+
+3. Project Layout
 Currently, the ActionGenerator project is divided into three modules:
  * ag-player      – common classes that enable implementing and running 
                     your own ActionGenerator for virtually any kind of 
@@ -15,7 +19,7 @@ Currently, the ActionGenerator project is divided into three modules:
  * ag-player-es   – ActionGenerator implementation for ElasticSearch.
  * ag-player-solr – ActionGenerator implementation for Apache Solr.
 
-3. Usage
+4. Usage
 The following action generators are available out of the box:
  a) Apache Solr
   * RandomQueriesSolrPlayerMain - generates random queries. You need to
@@ -72,13 +76,13 @@ The following action generators are available out of the box:
     For example:
     java -cp ag-player-es-0.1.0-SNAPSHOT-withdeps.jar com.sematext.ag.es.DictionaryDataEsPlayerMain http://localhost:9200/ documents document 100000 dict.txt id:numeric title:text likes:numeric
 
-4. Supported Targets
+5. Supported Targets
 Current implementation allows you to generate queries and data to the 
 following targets:
  * Apache Solr 
  * ElasticSearch. 
 
-5. Adding Support for Other Targets
+6. Adding Support for Other Targets
 In order to develop your own action generator, you need to provide the
 following implementations:
  * Event class implementation that will represent a single event you want 
@@ -87,11 +91,11 @@ following implementations:
  * Source implementation that will be responsible for creating your
    events.
 
-6. Maven Artifacts
+7. Maven Artifacts
 Maven artifacts of ActionGenerator project are published at 
 https://oss.sonatype.org/content/groups/public/
 
-6.1 To use ActionGenerator you should add the following dependency
+7.1 To use ActionGenerator you should add the following dependency
 to your project:
 <dependency>
   <groupId>com.sematext.ag</groupId>
@@ -99,7 +103,7 @@ to your project:
   <version>0.1.0</version>
 </dependency>
 
-6.2 To use ActionGenerator for ElasticSearch add the following
+7.2 To use ActionGenerator for ElasticSearch add the following
 dependency to your project:
 <dependency>
   <groupId>com.sematext.ag</groupId>
@@ -107,7 +111,7 @@ dependency to your project:
   <version>0.1.0</version>
 </dependency>
 
-6.3 To use ActionGenerator for Apache Solr add the following
+7.3 To use ActionGenerator for Apache Solr add the following
 dependency to your project:
 <dependency>
   <groupId>com.sematext.ag</groupId>
@@ -115,8 +119,8 @@ dependency to your project:
   <version>0.1.0</version>
 </dependency>
 
-7. Licensing
+8. Licensing
 Action Generator is released under Apache License, Version 2.0
 
-8. Contact
+9. Contact
 For any questions ping @sematext, @kucrafal, or @abaranau.
