@@ -4,16 +4,16 @@
   <parent>
     <groupId>com.sematext.ag</groupId>
     <artifactId>ag-parent</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
   </parent>
 
   <groupId>com.sematext.ag</groupId>
   <artifactId>ag-player-solr</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
   <name>AG Player for Apache Solr</name>
   <description>AG Player for Apache Solr</description>
-  <url>http://www.sematext.com</url>
+  <url>http://sematext.com/open-source/index.html</url>
 
   <licenses>
     <license>

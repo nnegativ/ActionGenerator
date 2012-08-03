@@ -10,10 +10,10 @@
   <groupId>com.sematext.ag</groupId>
   <artifactId>ag-parent</artifactId>
   <packaging>pom</packaging>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
   <name>AG Parent</name>
   <description>Parent module for ActionGenerator</description>
-  <url>http://sematext.com/open-source/</url>
+  <url>http://sematext.com/open-source/index.html</url>
   
   <licenses>
     <license>

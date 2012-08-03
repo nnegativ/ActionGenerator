@@ -93,7 +93,17 @@ public class DataDictionaryEventSource extends AbstractDictionaryEventSource<Sim
         return new String("" + RANDOM.nextInt(1000));
       case DATE:
         return "2006-02-13T15:26:37Z";
+      case GEO:
+        return getLatitude() + "," + getLongitude();
     }
     return "";
+  }
+  
+  private String getLatitude() {
+    return RANDOM.nextInt(180) - 90 + "." + RANDOM.nextInt(100);
+  }
+  
+  private String getLongitude() {
+    return RANDOM.nextInt(360) - 180 + "." + RANDOM.nextInt(100);
   }
 }

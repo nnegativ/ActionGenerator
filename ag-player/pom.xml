@@ -4,16 +4,16 @@
   <parent>
     <groupId>com.sematext.ag</groupId>
     <artifactId>ag-parent</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
   </parent>
   
   <groupId>com.sematext.ag</groupId>
   <artifactId>ag-player</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
   <name>AG Player</name>
   <description>AG Player</description>
-  <url>http://maven.apache.org</url>
+  <url>http://sematext.com/open-source/index.html</url>
 
   <licenses>
     <license>

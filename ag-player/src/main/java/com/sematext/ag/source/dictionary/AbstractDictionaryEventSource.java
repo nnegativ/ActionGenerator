@@ -55,21 +55,28 @@ public abstract class AbstractDictionaryEventSource<T extends Event> extends Fin
       throw new IllegalArgumentException("Property " + DICTIONARY_FILE_NAME_KEY
           + " should designate existing dictionary file!");
     }
+    BufferedReader bufferedReader = null;
     try {
-      BufferedReader br = new BufferedReader(new FileReader(f));
+      bufferedReader = new BufferedReader(new FileReader(f));
       while (true) {
-        String phrase = br.readLine();
+        String phrase = bufferedReader.readLine();
         if (phrase != null) {
           DICTIONARY.add(phrase.trim());
         } else {
           break;
         }
       }
-    } catch (IOException e) {
+    } catch (IOException ioe) {
       throw new IllegalArgumentException("File " + f.getName() + " under key " + DICTIONARY_FILE_NAME_KEY
           + " not readable!");
+    } finally {
+      try {
+        if (bufferedReader != null)
+        bufferedReader.close();
+      } catch (IOException ioe) {
+        throw new RuntimeException(ioe);
+      }
     }
-
   }
 
   /**

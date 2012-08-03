@@ -21,5 +21,5 @@ package com.sematext.ag.source.dictionary.field;
  * @author sematext, http://www.sematext.com/
  */
 public enum FieldType {
-  TEXT, NUMERIC, DATE;
+  TEXT, NUMERIC, DATE, GEO;
 }
