@@ -33,7 +33,6 @@ public class ComplexDataSolrSink extends AbstractHttpSink<ComplexEvent> {
 	@Override
 	public boolean write(ComplexEvent event) {
 	    LOG.info("Sending data to Apache Solr");
-	    System.err.println(new SolrDataModelProducer().convert(event.getObject()));
 	    HttpPost postMethod = new HttpPost(solrUrl);
 	    StringEntity postEntity;
 	    try {
