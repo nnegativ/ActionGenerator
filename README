@@ -46,6 +46,14 @@ The following action generators are available out of the box:
     - one or more fields and its types
     For example:
     java -cp ag-player-solr-0.1.0-SNAPSHOT-withdeps.jar com.sematext.ag.solr.DictionaryDataSolrPlayerMain http://localhost:8983/solr/documents/update/ 100000 dict.txt id:numeric title:text likes:numeric
+  * ComplexDataSolrPlayerMain - generates data and indexes them into Solr instance as DictionaryDataSolrPlayerMain.
+    The main difference is that this player handles more complex data definition (see: Complex Data Definition below). 
+    You need to provide the following parameters:
+    - Apache Solr update handler URL address
+    - number of events 
+    - path to file with JSON data definition    
+    For example:
+    java -cp ag-player-solr-0.1.0-SNAPSHOT-withdeps.jar com.sematext.ag.solr.ComplexDataSolrPlayerMain http://localhost:8983/solr/documents/update/ 100000 schema.json 
  b) ElasticSearch
   * SimpleEsPlayerMain - generates random queries. You need to provide
     the following parameters:
@@ -119,8 +127,72 @@ dependency to your project:
   <version>0.1.0</version>
 </dependency>
 
-8. Licensing
+8. Complex Data Definition (using Datamodel library by http://solr.pl/)
+ComplexDataSolrPlayerMain allows using expanded definition of generated data.
+Using JSON format the following information could be defined:
+ * field name
+ * type (currently supported: integer, long, date, string, array, object)
+ * probability - number indicating the probability of given field in generated data 
+   (100 means field is always generated, 50 means that a half of document contains given field)
+ * size (for arrays)
+Example of input file: 
+
+{ 
+	"data" : {
+		"id" : {
+			"type" : "identifier"
+		},
+		"tags" : {
+			"type" : "array",
+			"subtype" : {
+				"type": "integer"
+			},
+			"size" : 10
+		},
+		"position" : {
+			"type" : "object",
+			"fields" : {
+				"lon" : {
+					"type" : "long"
+				},
+				"lat" : {
+					"type" : "long"
+				}
+			},
+			"probability" : 50
+		},
+		"created" : {
+			"type" : "date"
+		},
+		"name" : {
+			"type" : "string",
+			"probability" : 30
+		}
+	}
+}
+
+Output:
+
+<doc>
+	<field name="id">30</field>
+	<field name="tags">1061831906</field>
+	<field name="tags">1823041322</field>
+	<field name="tags">1043347384</field>
+	<field name="tags">1435798929</field>
+	<field name="tags">1863886272</field>
+	<field name="tags">614448648</field>
+	<field name="tags">899164045</field>
+	<field name="tags">293936725</field>
+	<field name="tags">1762090246</field>
+	<field name="tags">1009759002</field>
+	<field name="position.lon">-3400858544594038103</field>
+	<field name="position.lat">-3581634897016771756</field>
+	<field name="created">2011-05-15T20:57:28</field>
+</doc>
+	 
+
+9. Licensing
 Action Generator is released under Apache License, Version 2.0
 
-9. Contact
+10. Contact
 For any questions ping @sematext, @kucrafal, or @abaranau.
