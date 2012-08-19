@@ -72,11 +72,7 @@ public abstract class Configurable {
    * @return property value as String or <code>null</code> if property doesn't exist.
    */
   public String getConfigurationValue(String name) {
-    if (properties.get(name) != null) {
-      return properties.get(name).toString();
-    } else {
-      return null;
-    }
+    return properties.getProperty(name);
   }
 
   protected void readConfiguration(InputStream stream) throws IOException {
