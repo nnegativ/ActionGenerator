@@ -83,6 +83,17 @@ The following action generators are available out of the box:
     - one or more fields and its types
     For example:
     java -cp ag-player-es-0.1.0-SNAPSHOT-withdeps.jar com.sematext.ag.es.DictionaryDataEsPlayerMain http://localhost:9200/ documents document 100000 dict.txt id:numeric title:text likes:numeric
+  * ComplexDataEsPlayerMain - generates data and indexes them into Elastic Search instance as DictionaryDataEsPlayerMain.
+    The main difference is that this player handles more complex data definition (see: Complex Data Definition below). 
+    You need to provide the following parameters:
+    - base url
+    - index name
+    - name of the field queries should be run against
+    - number of events 
+    - path to file with JSON data definition    
+    For example:
+    java -cp ag-player-es-0.1.0-SNAPSHOT-withdeps.jar com.sematext.ag.es.ComplexDataEsPlayerMain http://localhost:9200/ documents document 100000 schema.json 
+ 
 
 5. Supported Targets
 Current implementation allows you to generate queries and data to the 

@@ -120,7 +120,7 @@
     <dependency>
    	  <groupId>pl.solr.datamodel</groupId>
    	  <artifactId>datamodel</artifactId>
-   	  <version>0.0.2-SNAPSHOT</version>
+   	  <version>0.0.3-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

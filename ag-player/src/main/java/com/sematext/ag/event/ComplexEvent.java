@@ -13,4 +13,8 @@ public class ComplexEvent extends Event {
 		return object;
 	}
 
+	public String getIdentifier() {
+		return object.getIdentifier();
+	}
+
 }
