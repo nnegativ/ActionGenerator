@@ -11,6 +11,12 @@ import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.event.ComplexEvent;
 import com.sematext.ag.source.FiniteEventSource;
 
+/**
+ * Event source based on <code>ComplexEvent</code> and external record definition in JSON file.
+ *
+ * @author negativ
+ *
+ */
 public class ComplexEventSource extends FiniteEventSource<ComplexEvent> {
 
 	public static final String SCHEMA_FILE_NAME_KEY = "complexEventSource.schemaFileName";

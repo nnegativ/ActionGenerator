@@ -3,12 +3,16 @@ package com.sematext.ag.es;
 import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.PlayerRunner;
 import com.sematext.ag.es.sink.ComplexJSONDataESSink;
-import com.sematext.ag.es.sink.SimpleJSONDataESSink;
 import com.sematext.ag.source.FiniteEventSource;
 import com.sematext.ag.source.SimpleSourceFactory;
 import com.sematext.ag.source.dictionary.ComplexEventSource;
-import com.sematext.ag.source.dictionary.DataDictionaryEventSource;
 
+/**
+ * Elastic search data generator using complex definition of record from JSON file.
+ *
+ * @author negativ
+ *
+ */
 public final class ComplexDataEsPlayerMain {
   private ComplexDataEsPlayerMain() {
   }

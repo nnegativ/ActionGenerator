@@ -7,6 +7,12 @@ import com.sematext.ag.source.FiniteEventSource;
 import com.sematext.ag.source.SimpleSourceFactory;
 import com.sematext.ag.source.dictionary.ComplexEventSource;
 
+/**
+ * Solr search data generator using complex definition of record from JSON file.
+ *
+ * @author negativ
+ *
+ */
 public class ComplexDataSolrPlayerMain {
 
 	private ComplexDataSolrPlayerMain() {
