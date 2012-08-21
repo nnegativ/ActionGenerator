@@ -139,13 +139,16 @@ dependency to your project:
 </dependency>
 
 8. Complex Data Definition (using Datamodel library by http://solr.pl/)
-ComplexDataSolrPlayerMain allows using expanded definition of generated data.
-Using JSON format the following information could be defined:
+ComplexDataSolrPlayerMain allows you to use expanded data definition.
+Using JSON format the following information can be defined:
  * field name
  * type (currently supported: integer, long, date, string, array, object)
- * probability - number indicating the probability of given field in generated data 
-   (100 means field is always generated, 50 means that a half of document contains given field)
+ * probability - number from 0 to 100, indicating the probability that the 
+                 defined field will be present in the generated document (100 
+                 means that the field will be present in all the documents, 
+                 50 means that about 50% of the documents will contain given field)
  * size (for arrays)
+ 
 Example of input file: 
 
 { 
