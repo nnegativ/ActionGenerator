@@ -117,5 +117,10 @@
       <artifactId>metrics-core</artifactId>
       <version>2.1.2</version>
     </dependency>
+    <dependency>
+   	  <groupId>pl.solr.datamodel</groupId>
+   	  <artifactId>datamodel</artifactId>
+   	  <version>0.0.3</version>
+    </dependency>
   </dependencies>
 </project>
