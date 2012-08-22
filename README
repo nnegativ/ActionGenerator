@@ -99,7 +99,9 @@ The following action generators are available out of the box:
 Current implementation allows you to generate queries and data to the 
 following targets:
  * Apache Solr 
- * ElasticSearch. 
+ * ElasticSearch
+There are also available external modules with support for other targets:
+ * MongoDB (https://github.com/solrpl/ag-player-mongodb ) - currently support only for data generation.
 
 6. Adding Support for Other Targets
 In order to develop your own action generator, you need to provide the
