@@ -99,7 +99,9 @@ The following action generators are available out of the box:
 Current implementation allows you to generate queries and data to the 
 following targets:
  * Apache Solr 
- * ElasticSearch. 
+ * ElasticSearch
+There are also available external modules with support for other targets:
+ * MongoDB (https://github.com/solrpl/ag-player-mongodb ) - currently support only for data generation.
 
 6. Adding Support for Other Targets
 In order to develop your own action generator, you need to provide the
@@ -142,7 +144,7 @@ dependency to your project:
 ComplexDataSolrPlayerMain allows you to use expanded data definition.
 Using JSON format the following information can be defined:
  * field name
- * type (currently supported: integer, long, date, string, array, object)
+ * type (currently supported: integer, long, date, string, text, array, object, enum)
  * probability - number from 0 to 100, indicating the probability that the 
                  defined field will be present in the generated document (100 
                  means that the field will be present in all the documents, 
@@ -181,6 +183,10 @@ Example of input file:
 		"name" : {
 			"type" : "string",
 			"probability" : 30
+		},
+		"status" : {
+			"type" : "enum",
+			"available" : ["OPEN", "WAITING", "RUN", "CLOSED"]
 		}
 	}
 }
@@ -202,6 +208,7 @@ Output:
 	<field name="position.lon">-3400858544594038103</field>
 	<field name="position.lat">-3581634897016771756</field>
 	<field name="created">2011-05-15T20:57:28</field>
+	<field name="status">OPEN</field>
 </doc>
 	 
 
