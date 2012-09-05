@@ -102,6 +102,7 @@ following targets:
  * ElasticSearch
 There are also available external modules with support for other targets:
  * MongoDB (https://github.com/solrpl/ag-player-mongodb ) - currently support only for data generation.
+ * CSV (https://github.com/solrpl/ag-player-csv) - support for simple types and simple CSV files
 
 6. Adding Support for Other Targets
 In order to develop your own action generator, you need to provide the
