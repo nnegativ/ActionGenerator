@@ -7,10 +7,8 @@
     <version>0.1.4</version>
   </parent>
   
-  <groupId>com.sematext.ag</groupId>
   <artifactId>ag-player</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.4</version>
   <name>AG Player</name>
   <description>AG Player</description>
   <url>http://sematext.com/open-source/index.html</url>

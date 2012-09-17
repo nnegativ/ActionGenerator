@@ -61,6 +61,7 @@ public class SimpleXMLDataSolrSink extends AbstractHttpSink<SimpleDataEvent> {
   public boolean write(SimpleDataEvent event) {
     LOG.info("Sending data to Apache Solr");
     HttpPost postMethod = new HttpPost(solrUrl);
+    postMethod.setHeader("Content-type", "application/xml");
     StringEntity postEntity;
     try {
       postEntity = new StringEntity(XMLUtils.getSolrAddDocument(event.pairs()), "UTF-8");

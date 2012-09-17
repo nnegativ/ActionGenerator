@@ -28,7 +28,7 @@ The following action generators are available out of the box:
     - name of the field queries should be run against
     - number of events
     For example:
-    java -cp ag-player-solr-0.1.3-SNAPSHOT-withdeps.jar com.sematext.ag.solr.RandomQueriesSolrPlayerMain http://localhost:8983/solr/documents name 1000
+    java -cp ag-player-solr-0.1.4-withdeps.jar com.sematext.ag.solr.RandomQueriesSolrPlayerMain http://localhost:8983/solr/documents name 1000
   * DictionarySolrPlayerMain - generates queries with the use of the 
     provided dictionary. You need to provide the following parameters:
     - Apache Solr search handler URL address
@@ -36,7 +36,7 @@ The following action generators are available out of the box:
     - number of events
     - dictionary path
     For example:
-    java -cp ag-player-solr-0.1.3-SNAPSHOT-withdeps.jar com.sematext.ag.solr.DictionarySolrPlayerMain http://localhost:8983/solr/documents name 1000 dict.txt
+    java -cp ag-player-solr-0.1.4-withdeps.jar com.sematext.ag.solr.DictionarySolrPlayerMain http://localhost:8983/solr/documents name 1000 dict.txt
   * DictionaryDataSolrPlayerMain - generates data and indexes them 
     into provided instance. You need to provide the following 
     parameters:
@@ -45,7 +45,7 @@ The following action generators are available out of the box:
     - dictionary path
     - one or more fields and its types
     For example:
-    java -cp ag-player-solr-0.1.3-withdeps.jar com.sematext.ag.solr.DictionaryDataSolrPlayerMain http://localhost:8983/solr/documents/update/ 100000 dict.txt id:numeric title:text likes:numeric
+    java -cp ag-player-solr-0.1.4-withdeps.jar com.sematext.ag.solr.DictionaryDataSolrPlayerMain http://localhost:8983/solr/documents/update/ 100000 dict.txt id:numeric title:text likes:numeric
   * ComplexDataSolrPlayerMain - generates data and indexes them into Solr instance as DictionaryDataSolrPlayerMain.
     The main difference is that this player handles more complex data definition (see: Complex Data Definition below). 
     You need to provide the following parameters:
@@ -53,7 +53,7 @@ The following action generators are available out of the box:
     - number of events 
     - path to file with JSON data definition    
     For example:
-    java -cp ag-player-solr-0.1.0-withdeps.jar com.sematext.ag.solr.ComplexDataSolrPlayerMain http://localhost:8983/solr/documents/update/ 100000 schema.json 
+    java -cp ag-player-solr-0.1.4-withdeps.jar com.sematext.ag.solr.ComplexDataSolrPlayerMain http://localhost:8983/solr/documents/update/ 100000 schema.json 
  b) ElasticSearch
   * SimpleEsPlayerMain - generates random queries. You need to provide
     the following parameters:
@@ -62,7 +62,7 @@ The following action generators are available out of the box:
     - name of the field queries should be run against
     - number of events
     For example:
-    java -cp ag-player-es-0.1.3-withdeps.jar com.sematext.ag.es.SimpleEsPlayerMain http://localhost:9200/ documents text 1000
+    java -cp ag-player-es-0.1.4-withdeps.jar com.sematext.ag.es.SimpleEsPlayerMain http://localhost:9200/ documents text 1000
   * DictionaryEsPlayerMain - generates queries with the use of the 
     provided dictionary. You need to provide the following parameters:
     - base URL
@@ -71,7 +71,7 @@ The following action generators are available out of the box:
     - number of events
     - dictionary path
     For example:
-    java -cp ag-player-es-0.1.3-withdeps.jar com.sematext.ag.es.DictionaryEsPlayerMain http://localhost:9200/ documents text 1000 dict.txt
+    java -cp ag-player-es-0.1.4-withdeps.jar com.sematext.ag.es.DictionaryEsPlayerMain http://localhost:9200/ documents text 1000 dict.txt
   * DictionaryDataEsPlayerMain - generates data and indexes them 
     into provided instance. You need to provide the following 
     parameters:
@@ -82,7 +82,7 @@ The following action generators are available out of the box:
     - dictionary path
     - one or more fields and its types
     For example:
-    java -cp ag-player-es-0.1.3-withdeps.jar com.sematext.ag.es.DictionaryDataEsPlayerMain http://localhost:9200/ documents document 100000 dict.txt id:numeric title:text likes:numeric
+    java -cp ag-player-es-0.1.4-withdeps.jar com.sematext.ag.es.DictionaryDataEsPlayerMain http://localhost:9200/ documents document 100000 dict.txt id:numeric title:text likes:numeric
   * ComplexDataEsPlayerMain - generates data and indexes them into Elastic Search instance as DictionaryDataEsPlayerMain.
     The main difference is that this player handles more complex data definition (see: Complex Data Definition below). 
     You need to provide the following parameters:
@@ -92,18 +92,17 @@ The following action generators are available out of the box:
     - number of events 
     - path to file with JSON data definition    
     For example:
-    java -cp ag-player-es-0.1.3-withdeps.jar com.sematext.ag.es.ComplexDataEsPlayerMain http://localhost:9200/ documents document 100000 schema.json 
+    java -cp ag-player-es-0.1.4-withdeps.jar com.sematext.ag.es.ComplexDataEsPlayerMain http://localhost:9200/ documents document 100000 schema.json 
  
+
 5. Supported Targets
 Current implementation allows you to generate queries and data to the 
 following targets:
  * Apache Solr 
  * ElasticSearch
-
-5.1 Other Targets
-There are external modules that support more targets than the ones supported 
-by default. Those are:
- * MongoDB (https://github.com/solrpl/ag-player-mongodb)
+There are also available external modules with support for other targets:
+ * MongoDB (https://github.com/solrpl/ag-player-mongodb ) - currently support only for data generation.
+ * CSV (https://github.com/solrpl/ag-player-csv) - support for simple types and simple CSV files
 
 6. Adding Support for Other Targets
 In order to develop your own action generator, you need to provide the
@@ -123,7 +122,7 @@ to your project:
 <dependency>
   <groupId>com.sematext.ag</groupId>
   <artifactId>ag-player</artifactId>
-  <version>0.1.3</version>
+  <version>0.1.4</version>
 </dependency>
 
 7.2 To use ActionGenerator for ElasticSearch add the following
@@ -131,7 +130,7 @@ dependency to your project:
 <dependency>
   <groupId>com.sematext.ag</groupId>
   <artifactId>ag-player-es</artifactId>
-  <version>0.1.3</version>
+  <version>0.1.4</version>
 </dependency>
 
 7.3 To use ActionGenerator for Apache Solr add the following
@@ -139,7 +138,7 @@ dependency to your project:
 <dependency>
   <groupId>com.sematext.ag</groupId>
   <artifactId>ag-player-solr</artifactId>
-  <version>0.1.3</version>
+  <version>0.1.4</version>
 </dependency>
 
 8. Complex Data Definition (using Datamodel library by http://solr.pl/)
