@@ -38,9 +38,9 @@ public class SimpleJSONDataESSink extends AbstractHttpSink<SimpleDataEvent> {
   public static final String ES_INDEX_NAME_KEY = "simpleJSONDataEsSink.indexName";
   public static final String ES_TYPE_NAME_KEY = "simpleJSONDataEsSink.typeName";
   private static final Logger LOG = Logger.getLogger(SimpleJSONDataESSink.class);
-  private String esBaseUrl;
-  private String indexName;
-  private String typeName;
+  protected String esBaseUrl;
+  protected String indexName;
+  protected String typeName;
   
   /**
    * (non-Javadoc)

@@ -17,6 +17,8 @@ package com.sematext.ag.es.util;
 
 import org.junit.Test;
 
+import com.sematext.ag.event.SimpleDataEvent;
+
 import java.util.HashMap;
 import java.util.Map;
 import junit.framework.TestCase;
@@ -28,5 +30,11 @@ public class JSONUtilsTest extends TestCase {
     pairs.put("aaa", "val_aaa");
     pairs.put("bb", "val_bb");
     assertEquals("{\"aaa\":\"val_aaa\",\"bb\":\"val_bb\"}", JSONUtils.getElasticSearchAddDocument(pairs));
+  }
+
+  @Test
+  public void testGetElasticSearchBulkHeader() throws Exception {
+    assertEquals("{\"index\":{\"_index\":\"test\",\"_type\":\"doc\",\"_id\":\"1\"}}",
+        JSONUtils.getElasticSearchBulkHeader(new SimpleDataEvent("1"), "test", "doc"));
   }
 }

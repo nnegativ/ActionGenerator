@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sematext.ag</groupId>
     <artifactId>ag-parent</artifactId>
-    <version>0.1.5</version>
+    <version>0.1.6</version>
   </parent>
   
   <artifactId>ag-player</artifactId>

@@ -18,6 +18,8 @@ package com.sematext.ag.es.util;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.sematext.ag.event.SimpleDataEvent;
+
 /**
  * Utility methods for working with JSON.
  * 
@@ -26,7 +28,7 @@ import java.util.Map.Entry;
 public final class JSONUtils {
   private JSONUtils() {
   }
-  
+
   /**
    * Returns ElasticSearch add command.
    * 
@@ -46,6 +48,29 @@ public final class JSONUtils {
       first = false;
     }
     builder.append("}");
+    return builder.toString();
+  }
+
+  /**
+   * Constructs ES bulk header for the document.
+   * 
+   * @param event
+   *          data event
+   * @param index
+   *          index name
+   * @param type
+   *          document type
+   * @return ES bulk header
+   */
+  public static String getElasticSearchBulkHeader(SimpleDataEvent event, String index, String type) {
+    StringBuilder builder = new StringBuilder();
+    builder.append("{\"index\":{\"_index\":\"");
+    builder.append(index);
+    builder.append("\",\"_type\":\"");
+    builder.append(type);
+    builder.append("\",\"_id\":\"");
+    builder.append(event.getId());
+    builder.append("\"}}");
     return builder.toString();
   }
 
