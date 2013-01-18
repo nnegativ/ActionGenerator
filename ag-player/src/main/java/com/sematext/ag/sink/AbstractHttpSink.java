@@ -15,21 +15,16 @@
  */
 package com.sematext.ag.sink;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
-
-import java.io.IOException;
 
 import com.sematext.ag.PlayerConfig;
 import com.sematext.ag.event.Event;
 import com.sematext.ag.exception.InitializationFailedException;
+import com.sematext.ag.http.HttpUtils;
 
 /**
  * Abstract base {@link Sink} implementation for sinks using HTTP calls.
@@ -60,21 +55,7 @@ public abstract class AbstractHttpSink<T extends Event> extends Sink<T> {
    */
   public boolean execute(HttpRequestBase request) {
     LOG.info("Sending event");
-    try {
-      HttpResponse response = HTTP_CLIENT_INSTANCE.execute(request);
-      LOG.info("Event sent");
-      if (HttpStatus.SC_OK != response.getStatusLine().getStatusCode()) {
-        return false;
-      }
-      HttpEntity entity = response.getEntity();
-      EntityUtils.consume(entity);
-      return true;
-    } catch (IOException e) {
-      LOG.error("Sending event failed", e);
-      return false;
-    } finally {
-      request.releaseConnection();
-    }
+    return HttpUtils.processRequestSilently(HTTP_CLIENT_INSTANCE, request);
   }
 
   /**

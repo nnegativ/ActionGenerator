@@ -15,15 +15,11 @@
  */
 package com.sematext.ag.es.sink.thread;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
+import com.sematext.ag.http.HttpUtils;
 
 /**
  * Data sender class using a new thread.
@@ -56,19 +52,6 @@ public class DataSenderThread implements Runnable {
   @Override
   public void run() {
     LOG.info("Sending event in another thread");
-    try {
-      HttpResponse response = httpClient.execute(request);
-      LOG.info("Event sent");
-      if (HttpStatus.SC_OK != response.getStatusLine().getStatusCode()) {
-        LOG.error("Error during event sending");
-      } else {
-        HttpEntity entity = response.getEntity();
-        EntityUtils.consume(entity);
-      }
-    } catch (IOException e) {
-      LOG.error("Sending event failed", e);
-    } finally {
-      request.releaseConnection();
-    }
+    HttpUtils.processRequestSilently(httpClient, request);
   }
 }
