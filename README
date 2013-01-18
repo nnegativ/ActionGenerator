@@ -89,12 +89,13 @@ The following action generators are available out of the box:
     - base URL
     - index name
     - name of the field queries should be run against
+    - should data be sent in different thread (true) or the same (false)
     - bulk batch size
     - number of events
     - dictionary path
     - one or more fields and its types
     For example:
-    java -cp ag-player-es-0.1.6-withdeps.jar com.sematext.ag.es.BulkDictionaryDataEsPlayerMain http://localhost:9200/ documents document 100 100000 dict.txt id:numeric title:text likes:numeric
+    java -cp ag-player-es-0.1.6-withdeps.jar com.sematext.ag.es.BulkDictionaryDataEsPlayerMain http://localhost:9200/ documents document false 100 100000 dict.txt id:numeric title:text likes:numeric
   * ComplexDataEsPlayerMain - generates data and indexes them into Elastic Search instance as DictionaryDataEsPlayerMain.
     The main difference is that this player handles more complex data definition (see: Complex Data Definition below). 
     You need to provide the following parameters:

@@ -42,7 +42,7 @@ public abstract class AbstractHttpSink<T extends Event> extends Sink<T> {
   public static final String MAXIMUM_CONNECTIONS_TOTAL_KEY = "abstracthttpsink.max_conn_total";
   public static final int DEFAULT_MAXIMUM_CONNECTIONS_PER_ROUTE = 100;
   public static final int DEFAULT_MAXIMUM_CONNECTIONS_TOTAL = 100;
-  private static final HttpClient HTTP_CLIENT_INSTANCE;
+  protected static final HttpClient HTTP_CLIENT_INSTANCE;
 
   static {
     PoolingClientConnectionManager pccm = new PoolingClientConnectionManager();
